@@ -89,123 +89,62 @@ def HP_drop(x, y, i, HP_drop_list):
 def ammo_drop(x, y, i, ammo_drop_list):
     assets.screen.blit(ammo_drop_list[i], (x, y))
 
-# collision detection (player shots --> enemy)
-def collision(alienX_list, alienY_list, ammoX_list, ammoY_list):
-    distance = math.sqrt((math.pow(alienX_list - ammoX_list, 2)) + (math.pow(alienY_list - ammoY_list, 2)))
+#extra missile spawn function
+def missile_drop(x, y, i, missile_drop_list):
+    assets.screen.blit(missile_drop_list[i], (x, y))
+
+# collision detection (standard)
+def collision(x, y, z, i):
+    distance = math.sqrt((math.pow(x - z, 2)) + (math.pow(y - i, 2)))
     if distance < 27:
         return True
     else:
         return False
 
-# collision detection (player missile --> enemy)
-def collision1(alienX_list, alienY_list, missileX, missileY):
-    distance = math.sqrt((math.pow(alienX_list - missileX, 2)) + (math.pow(alienY_list - missileY, 2)))
-    if distance < 27:
-        return True
-    else:
-        return False
-
-# collision detection (player <-- enemy shots)
-def collision2(playerX, playerY, alienX_ammo, alienY_ammo):
-    distance = math.sqrt((math.pow(playerX - alienX_ammo, 2)) + (math.pow(playerY - alienY_ammo, 2)))
-    if distance < 27:
-        return True
-    else:
-        return False
-
-# collision detection (player <--> enemy)
-def collision3(playerX, playerY, alienX_list, alienY_list):
-    distance = math.sqrt((math.pow(playerX - alienX_list, 2)) + (math.pow(playerY - alienY_list, 2)))
-    if distance < 27:
-        return True
-    else:
-        return False
-
-# collision detection (player <--> HP_drop)
-def collision4(playerX, playerY, drop_numbX, drop_numbY):
-    distance = math.sqrt((math.pow(playerX - drop_numbX, 2)) + (math.pow(playerY - drop_numbY, 2)))
-    if distance < 27:
-        return True
-    else:
-        return False
-
-# collision detection (player <--> ammo_drop)
-def collision5(playerX, playerY, ammo_drop_numbX, ammo_drop_numbY):
-    distance = math.sqrt((math.pow(playerX - ammo_drop_numbX, 2)) + (math.pow(playerY - ammo_drop_numbY, 2)))
-    if distance < 27:
-        return True
-    else:
-        return False
-
-# collision detection (player shots --> boss)
-def collision6(bossX, bossY, ammoX_list, ammoY_list):
-    distance = math.sqrt((math.pow(bossX - ammoX_list, 2)) + (math.pow((bossY + 70) - ammoY_list, 2)))
+# collision detection (player/ player shots --> boss)
+def collision2(x, y, z, i):
+    distance = math.sqrt((math.pow(x - z, 2)) + (math.pow((y+100) - i, 2)))
     if distance < 50:
         return True
     else:
         return False
 
-# collision detection (player missile --> boss)
-def collision7(bossX, bossY, missileX, missileY):
-    distance = math.sqrt((math.pow(bossX - missileX, 2)) + (math.pow((bossY + 70) - missileY, 2)))
-    if distance < 50:
-        return True
-    else:
-        return False
-
-# collision detection (player <--> boss)
-def collision8(playerX, playerY, bossX, bossY):
-    distance = math.sqrt((math.pow(playerX - bossX, 2)) + (math.pow(playerY - (bossY + 70), 2)))
-    if distance < 50:
-        return True
-    else:
-        return False
-
-# collision detection (player <-- boss shots (top))
-def collision9(playerX, playerY, bossX_ammo_top, bossY_ammo_top):
-    distance = math.sqrt((math.pow(playerX - bossX_ammo_top, 2)) + (math.pow(playerY - bossY_ammo_top, 2)))
+# collision detection (player <-- boss shots(first weapon type(top))
+def collision3(x, y, z, i):
+    distance = math.sqrt((math.pow(x - z - 100, 2)) + (math.pow(y - i, 2)))
     if distance < 27:
         return True
     else:
         return False
 
-# collision detection (player <-- boss shots (bottom))
-def collision10(playerX, playerY, bossX_ammo_bottom, bossY_ammo_bottom):
-    distance = math.sqrt((math.pow(playerX - bossX_ammo_bottom, 2)) + (math.pow(playerY - bossY_ammo_bottom, 2)))
+# collision detection (player <-- boss shots(first weapon type(bottom))
+def collision4(x, y, z, i):
+    distance = math.sqrt((math.pow(x - z - 100, 2)) + (math.pow(y - i - 150, 2)))
     if distance < 27:
         return True
     else:
         return False
 
-# collision detection (player <-- boss laser shots(top))
-def collision11(playerX, playerY, bossX_ammo_2_top, bossY_ammo_2_top):
-    distance = math.sqrt((math.pow(playerX - bossX_ammo_2_top, 2)) + (math.pow(playerY - bossY_ammo_2_top, 2)))
+# collision detection (player <-- boss shots(second weapon type(top))
+def collision5(x, y, z, i):
+    distance = math.sqrt((math.pow(x - z - 80, 2)) + (math.pow(y - i - 45, 2)))
     if distance < 27:
         return True
     else:
         return False
 
-# collision detection (player <-- boss laser shots(bottom))
-def collision12(playerX, playerY, bossX_ammo_2_bottom, bossY_ammo_2_bottom):
-    distance2 = math.sqrt((math.pow(playerX - bossX_ammo_2_bottom, 2)) + (math.pow(playerY - bossY_ammo_2_bottom, 2)))
-    if distance2 < 27:
+# collision detection (player <-- boss shots(second weapon type(bottom))
+def collision6(x, y, z, i):
+    distance = math.sqrt((math.pow(x - z - 80, 2)) + (math.pow(y - i - 105, 2)))
+    if distance < 27:
         return True
     else:
         return False
 
-# in range for shot detection for enemies
-def Range(playerY, alienY_list):
-    distance = (playerY + 10) - alienY_list
-    distance2 = (playerY - 10) - alienY_list
-    if 0 < distance < 300 and -11 < distance2 < 300:
-        return True
-    else:
-        return False
-
-# in range for shot detection for boss
-def Range_2(playerY, bossY):
-    distance = (playerY + 10) - bossY
-    distance2 = (playerY - 10) - bossY
+# in range for shot detection for enemies/ boss
+def Range(x, y):
+    distance = (x + 10) - y
+    distance2 = (x - 10) - y
     if 0 < distance < 300 and -11 < distance2 < 300:
         return True
     else:
@@ -216,6 +155,31 @@ def place_cubes(lastX, lastY, cubeX_list, cubeY_list, cube_list, cubeX_change, c
     for i in range(70):
         cube_list.append(assets.cube)
         numb5 = random.randint(-50, 50)
+        numb6 = random.randint(-50, 50)
+        numb7 = random.uniform(1, 0.05)
+        numb8 = random.uniform(1, 0.05)
+        numb9 = random.uniform(- 1, - 0.05)
+        numb10 = random.uniform(- 1, - 0.05)
+        numb1 = random.randint(1, 2)
+        numb2 = random.randint(1, 2)
+
+        cubeX_list.append(lastX + numb5)
+        cubeY_list.append(lastY + numb6)
+
+        if numb1 == 1:
+            cubeX_change.append(numb7)
+        if numb2 == 1:
+            cubeY_change.append(numb8)
+        if numb1 == 2:
+            cubeX_change.append(numb9)
+        if numb2 == 2:
+            cubeY_change.append(numb10)
+
+# function to create debris elements from explosion for  level 1 boss
+def place_cubes_boss(lastX, lastY, cubeX_list, cubeY_list, cube_list, cubeX_change, cubeY_change):
+    for i in range(500):
+        cube_list.append(assets.cube)
+        numb5 = random.randint(-80, 80)
         numb6 = random.randint(-50, 50)
         numb7 = random.uniform(1, 0.05)
         numb8 = random.uniform(1, 0.05)

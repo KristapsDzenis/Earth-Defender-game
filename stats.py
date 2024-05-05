@@ -1,5 +1,6 @@
 # file for all classes
 
+# Player class containing all attributes for player
 class Player:
     def __init__(self):
         self.x = 0
@@ -8,7 +9,7 @@ class Player:
         self.y_change = 0
         self.bool = "No_collision"
         self.timer = 0
-        self.hp = 100
+        self.hp = 10
         self.ammo = 1000
         self.missile_ammo = 3
         self.score = 0
@@ -26,6 +27,7 @@ class Player:
         self.max_ammo = 0
         self.end_timer = 0
 
+# class for supply drops attributes
 class Drops:
     def __init__(self):
         self.HP_drop_count = 0
@@ -36,7 +38,12 @@ class Drops:
         self.ammo_drop_list = []
         self.ammo_drop_numbX = []
         self.ammo_drop_numbY = []
+        self.missile_drop_count = 0
+        self.missile_drop_list = []
+        self.missile_drop_numbX = []
+        self.missile_drop_numbY = []
 
+# class for alien attributes and lists
 class Aliens:
     def __init__(self):
         self.alien_list = []
@@ -54,6 +61,7 @@ class Aliens:
         self.alienX_ammoChange = 3.5
         self.max_enemy_ammo = 0
 
+# class for sprites used in explosions
 class Explosions:
     def __init__(self):
         self.lastX = 0
@@ -65,6 +73,7 @@ class Explosions:
         self.cubeX_change = []
         self.cubeY_change = []
 
+# Level 1 boss class containing all attributes for boss
 class level1_Boss:
     def __init__(self):
         self.boss_level = False
@@ -74,10 +83,12 @@ class level1_Boss:
         self.bossY = 0
         self.bossX_change = 0
         self.bossY_change = 0
-        self.boss_HP = 110
+        self.boss_HP = 10  # 110
         self.boss_bool = "No_collision"
         self.boss_timer = 0
+        self.end_timer = 0
 
+# class for boss's first type weapons
 class level1_Boss_Wpn1:
     def __init__(self):
         self.bossX_ammoChange = 3.5
@@ -96,20 +107,8 @@ class level1_Boss_Wpn1:
         self.bossY_ammo_bottom = []
         self.boss_bool_bottom = []
 
-class level1_Boss_Wpn2:
+# class for boss's second type weapons, properties inherited from first type
+class level1_Boss_Wpn2(level1_Boss_Wpn1):
     def __init__(self):
+        level1_Boss_Wpn1.__init__(self)
         self.bossX_ammoChange_2 = 5.5
-        self.boss_ammo_counter_2_top = 0
-        self.bossX_ammo_numb_2_top = 0
-        self.bossY_ammo_numb_2_top = 0
-        self.boss_ammo_2_top = []
-        self.bossX_ammo_2_top = []
-        self.bossY_ammo_2_top = []
-        self.boss_bool_2_top = []
-        self.boss_ammo_counter_2_bottom = 0
-        self.bossX_ammo_numb_2_bottom = 0
-        self.bossY_ammo_numb_2_bottom = 0
-        self.boss_ammo_2_bottom = []
-        self.bossX_ammo_2_bottom = []
-        self.bossY_ammo_2_bottom = []
-        self.boss_bool_2_bottom = []
