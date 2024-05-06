@@ -83,7 +83,7 @@ class level1_Boss:
         self.bossY = 0
         self.bossX_change = 0
         self.bossY_change = 0
-        self.boss_HP = 10  # 110
+        self.boss_HP = 110  # 110
         self.boss_bool = "No_collision"
         self.boss_timer = 0
         self.end_timer = 0

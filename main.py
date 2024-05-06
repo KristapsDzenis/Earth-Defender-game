@@ -47,13 +47,35 @@ def start():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     run = False
-                    level_1()
+                    level_1_intro()
 
         # updates display each frame
         pygame.display.update()
         # limit frames to 100fps / 100 loops per second
         clock.tick(100)
 
+# level 1 intro screen loop
+def level_1_intro():
+    timer = 0
+    run = True
+    while run == True:
+        assets.screen.fill((0, 0, 0))
+        timer += 1
+
+        # level title
+        title = assets.font5.render("Level 1", True, (8, 167, 3))
+        assets.screen.blit(title, (200, 320))
+        title = assets.font5.render("Earth", True, (8, 167, 3))
+        assets.screen.blit(title, (600, 320))
+
+        if timer == 300:
+            run = False
+            level_1()
+
+        # updates display each frame
+        pygame.display.update()
+        # limit frames to 100fps / 100 loops per second
+        clock.tick(100)
 
 # main loop
 def level_1():
@@ -71,7 +93,7 @@ def level_1():
     enemy_count = 0
     enemy_wave = False
 
-    timer = 10500
+    timer = 0
     run = True
     while run == True:
         # background ,UI elements
@@ -560,38 +582,29 @@ def level_1():
                 player.missile_x = 0
                 player.missile_x = 380
 
-        # BUGGED PART
         # for what happens if collision happens (player <--> HP_drop)
         for i in range(drops.HP_drop_count):
             collide4 = func.collision(player.x, player.y, drops.drop_numbX[i], drops.drop_numbY[i])
             if collide4:
-                del drops.HP_drop_list[i]
-                del drops.drop_numbX[i]
-                del drops.drop_numbY[i]
-                drops.HP_drop_count -= 1
+                drops.drop_numbX[i] = -100
+                drops.drop_numbY[i] = 0
                 player.hp += 1
 
         # for what happens if collision happens (player <--> ammo_drop)
         for i in range(drops.ammo_drop_count):
             collide5 = func.collision(player.x, player.y, drops.ammo_drop_numbX[i], drops.ammo_drop_numbY[i])
             if collide5:
-                del drops.ammo_drop_list[i]
-                del drops.ammo_drop_numbX[i]
-                del drops.ammo_drop_numbY[i]
-                drops.ammo_drop_count -= 1
+                drops.ammo_drop_numbX[i] = -100
+                drops.ammo_drop_numbY[i] = 0
                 player.ammo += 400
 
         # for what happens if collision happens (player <--> missile_drop)
         for i in range(drops.missile_drop_count):
             collide13 = func.collision(player.x, player.y, drops.missile_drop_numbX[i], drops.missile_drop_numbY[i])
             if collide13:
-                del drops.missile_drop_list[i]
-                del drops.missile_drop_numbX[i]
-                del drops.missile_drop_numbY[i]
-                drops.missile_drop_count -= 1
+                drops.missile_drop_numbX[i] = -100
+                drops.missile_drop_numbY[i] = 0
                 player.missile_ammo += 1
-
-        # BUGGED PART
 
         # for what happens if collision happens (player shots --> enemy)
         for j in range(player.max_ammo):
@@ -728,13 +741,27 @@ def level_1():
                     drops.ammo_drop_numbY.append(random.randint(0, 640))
                     func.ammo_drop(drops.ammo_drop_numbX[i], drops.ammo_drop_numbY[i], i, drops.ammo_drop_list)
                 drops.missile_drop_count += 2
-                for i in range(drops.missile_drop_count ):
+                for i in range(drops.missile_drop_count):
                     drops.missile_drop_list.append(assets.missile_drop)
                     drops.missile_drop_numbX.append(random.randint(200, 1000))
                     drops.missile_drop_numbY.append(random.randint(0, 640))
                     func.ammo_drop(drops.missile_drop_numbX[i], drops.missile_drop_numbY[i], i, drops.missile_drop_list)
 
-            # if statement for transfer to next level here !!!
+            text = assets.font6.render("Press enter to progress to next level", True, (205, 51, 51))
+            assets.screen.blit(text, (200, 640))
+
+            # press enter to progress to next level
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        run = False
+                        del drops
+                        del aliens
+                        del explode
+                        del boss
+                        del wpn1
+                        del wpn2
+                        level_1_intro()
 
         # LAUNCH ALL AND GAME OVER CONDITION
         # if player HP is less than 0 game is over
@@ -758,6 +785,39 @@ def level_1():
                 func.player(player.x, player.y)
             if player.bool == "Yes_collision":
                 func.player2(player.x, player.y)
+
+        # print text on screen
+        if 0 <= timer <= 60 or 121 <= timer <= 180 or 241 <= timer <= 300 or 361 <= timer <= 420:
+            text = assets.font6.render("Wave 1 Incoming", True, (205, 51, 51))
+            assets.screen.blit(text, (450, 10))
+        if 61 <= timer <= 120 or 181 <= timer <= 240 or 301 <= timer <= 360 or 421 <= timer <= 480:
+            text = assets.font6.render("Wave 1 Incoming", True, (95, 9, 9))
+            assets.screen.blit(text, (450, 10))
+
+        if 2800 <= timer <= 2860 or 2921 <= timer <= 2980 or 3041 <= timer <= 3100 or 3161 <= timer <= 3220:
+            text = assets.font6.render("Wave 2 Incoming", True, (205, 51, 51))
+            assets.screen.blit(text, (450, 10))
+        if 2861 <= timer <= 2920 or 2981 <= timer <= 3040 or 3101 <= timer <= 3160 or 3221 <= timer <= 3280:
+            text = assets.font6.render("Wave 2 Incoming", True, (95, 9, 9))
+            assets.screen.blit(text, (450, 10))
+
+        if 6800 <= timer <= 6860 or 6921 <= timer <= 6980 or 7041 <= timer <= 7100 or 7161 <= timer <= 7220:
+            text = assets.font6.render("Wave 3 Incoming", True, (205, 51, 51))
+            assets.screen.blit(text, (450, 10))
+        if 6861 <= timer <= 6920 or 6981 <= timer <= 7040 or 7101 <= timer <= 7160 or 7221 <= timer <= 7280:
+            text = assets.font6.render("Wave 3 Incoming", True, (95, 9, 9))
+            assets.screen.blit(text, (450, 10))
+
+        if (10800 <= timer <= 10860 or 10921 <= timer <= 10980 or 11041 <= timer <= 11100 or 11161 <= timer <= 11220
+            or 11281 <= timer <= 11340 or 11401 <= timer <= 11460 or 11521 <= timer <= 11580):
+            text = assets.font6.render("!!! Boss Incoming !!!", True, (205, 51, 51))
+            assets.screen.blit(text, (420, 640))
+            assets.screen.blit(text, (420, 10))
+        if (10861 <= timer <= 10920 or 10981 <= timer <= 11040 or 11101 <= timer <= 11160 or 11221 <= timer <= 11280
+            or 11341 <= timer <= 11400 or 11461 <= timer <= 11520 or 11581 <= timer <= 11640):
+            text = assets.font6.render("!!! Boss Incoming !!!", True, (219, 209, 4))
+            assets.screen.blit(text, (420, 10))
+            assets.screen.blit(text, (420, 640))
 
         # update all
         timer += 1
