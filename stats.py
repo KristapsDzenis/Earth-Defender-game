@@ -43,7 +43,7 @@ class Drops:
         self.missile_drop_numbX = []
         self.missile_drop_numbY = []
 
-# class for alien attributes and lists
+# class for alien type 1 attributes and lists
 class Aliens:
     def __init__(self):
         self.alien_list = []
@@ -60,6 +60,11 @@ class Aliens:
         self.alienBool_ammo = []
         self.alienX_ammoChange = 3.5
         self.max_enemy_ammo = 0
+
+class Aliens_2(Aliens):
+    def __init__(self):
+        Aliens.__init__(self)
+        self.alienX_ammoChange_2 = 5.5
 
 # class for sprites used in explosions
 class Explosions:
