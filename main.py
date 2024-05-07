@@ -47,7 +47,7 @@ def start():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     run = False
-                    level_2_intro()
+                    level_1_intro()
 
         # updates display each frame
         pygame.display.update()
@@ -78,7 +78,7 @@ def level_1_intro():
         clock.tick(100)
 
 # level 2 intro screen loop
-def level_2_intro():
+def level_2_intro(player):
     timer = 0
     run = True
     while run == True:
@@ -93,7 +93,7 @@ def level_2_intro():
 
         if timer == 300:
             run = False
-            level_2()
+            level_2(player)
 
         # updates display each frame
         pygame.display.update()
@@ -274,6 +274,19 @@ def level_1():
                         player.missile_y = player.y
                         player.missile_x = player.x
                         func.missile_fire(player.missile_x, player.missile_y)
+
+                # press enter to progress to next level if boss defeated
+                if event.key == pygame.K_RETURN:
+                    if boss.boss_HP <= 0:
+                        run = False
+                        del drops
+                        del aliens
+                        del explode
+                        del boss
+                        del wpn1
+                        del wpn2
+                        level_2_intro(player)
+
             # for when keys are released
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
@@ -773,19 +786,6 @@ def level_1():
             text = assets.font6.render("Press enter to progress to next level", True, (205, 51, 51))
             assets.screen.blit(text, (200, 640))
 
-            # press enter to progress to next level
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_RETURN:
-                        run = False
-                        del drops
-                        del aliens
-                        del explode
-                        del boss
-                        del wpn1
-                        del wpn2
-                        level_2_intro(player)
-
         # LAUNCH ALL AND GAME OVER CONDITION
         # if player HP is less than 0 game is over
         if player.hp <= 0:
@@ -861,9 +861,9 @@ def level_1():
 
 
 # main loop for level 2
-def level_2():
+def level_2(player):
     # initialise all objects
-    player = stats.Player()
+    #player = stats.Player()
     drops = stats.Drops()
     aliens = stats.Aliens()
     aliens2 = stats.Aliens_2()
@@ -871,6 +871,8 @@ def level_2():
     boss = stats.level1_Boss()
     wpn1 = stats.level1_Boss_Wpn1()
     wpn2 = stats.level1_Boss_Wpn2()
+    player.x = 0
+    player.y = 380
 
     # enemy counter start stats
     enemy_numb = 0
@@ -910,10 +912,10 @@ def level_2():
 
         # third enemy wave spawn
         if timer == 7000:
-            enemy_numb += 12
-            enemy_count = 12
-            enemy_numb_2 += 3
-            enemy_count_2 = 3
+            enemy_numb += 15
+            enemy_count = 15
+            enemy_numb_2 += 4
+            enemy_count_2 = 4
             enemy_wave = True
             # spawn extra ammunition for player
             drops.ammo_drop_count += 1
@@ -1057,6 +1059,19 @@ def level_2():
                         player.missile_y = player.y
                         player.missile_x = player.x
                         func.missile_fire(player.missile_x, player.missile_y)
+
+                # press enter to progress to next level if boss defeated
+                if event.key == pygame.K_RETURN:
+                    if boss.boss_HP <= 0:
+                        run = False
+                        del drops
+                        del aliens
+                        del explode
+                        del boss
+                        del wpn1
+                        del wpn2
+                        level_1_intro()
+
             # for when keys are released
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
@@ -1479,11 +1494,11 @@ def level_2():
             collide15 = func.collision(player.x, player.y, aliens2.alienX_list[i], aliens2.alienY_list[i])
             if collide15:
                 player.bool = "Yes_collision"
-                aliens.alienHP_list[i] -= 5
+                aliens2.alienHP_list[i] -= 5
                 player.hp -= 1
                 player.score += 1
-                aliens.alien_bool[i] = "Yes_collision"
-                aliens.alien_list[i] = (pygame.transform.rotate((pygame.image.load("assets/alien2.png")), 90))
+                aliens2.alien_bool[i] = "Yes_collision"
+                aliens2.alien_list[i] = (pygame.transform.rotate((pygame.image.load("assets/alien_second2.png")), 90))
 
         # for what happens if collision happens (player missile --> enemy(type 1))
         for i in range(enemy_numb):
@@ -1492,6 +1507,18 @@ def level_2():
                 aliens.alienHP_list[i] -= 25
                 aliens.alien_bool[i] = "Yes_collision"
                 aliens.alien_list[i] = (pygame.transform.rotate((pygame.image.load("assets/alien2.png")), 90))
+                player.missile_state = "old"
+                player.missile_x = 0
+                player.missile_x = 380
+
+        # for what happens if collision happens (player missile --> enemy(type 2))
+        for i in range(enemy_numb_2):
+            collide16 = func.collision(aliens2.alienX_list[i], aliens2.alienY_list[i], player.missile_x,
+                                      player.missile_y)
+            if collide16:
+                aliens2.alienHP_list[i] -= 25
+                aliens2.alien_bool[i] = "Yes_collision"
+                aliens2.alien_list[i] = (pygame.transform.rotate((pygame.image.load("assets/alien_second2.png")), 90))
                 player.missile_state = "old"
                 player.missile_x = 0
                 player.missile_x = 380
@@ -1522,6 +1549,7 @@ def level_2():
 
         # for what happens if collision happens (player shots --> enemy(type 1 and type 2))
         for j in range(player.max_ammo):
+            # for enemy type 1
             for i in range(enemy_numb):
                 collide = func.collision(aliens.alienX_list[i], aliens.alienY_list[i], player.ammoX_list[j], player.ammoY_list[j])
                 # what happens at single impact
@@ -1530,6 +1558,17 @@ def level_2():
                     player.score += 1
                     aliens.alien_bool[i] = "Yes_collision"
                     aliens.alien_list[i] = (pygame.transform.rotate((pygame.image.load("assets/alien2.png")), 90))
+                    player.ammoY_list[j] = 750
+                    player.ammoX_list[j] = 1150
+            # for enemy type 2
+            for i in range(enemy_numb_2):
+                collide17 = func.collision(aliens2.alienX_list[i], aliens2.alienY_list[i], player.ammoX_list[j], player.ammoY_list[j])
+                # what happens at single impact
+                if collide17:
+                    aliens2.alienHP_list[i] -= 1
+                    player.score += 1
+                    aliens2.alien_bool[i] = "Yes_collision"
+                    aliens2.alien_list[i] = (pygame.transform.rotate((pygame.image.load("assets/alien_second2.png")), 90))
                     player.ammoY_list[j] = 750
                     player.ammoX_list[j] = 1150
 
@@ -1603,7 +1642,7 @@ def level_2():
                         wpn2.bossY_ammo_bottom[i] = 0
                         wpn2.bossX_ammo_bottom[i] = -100
 
-        # visual feedback from collision for enemy
+        # visual feedback from collision for enemy (type 1)
         for i in range(enemy_numb):
             if aliens.alien_bool[i] == "Yes_collision":
                 aliens.alien_timer[i] += 1
@@ -1611,6 +1650,15 @@ def level_2():
                     aliens.alien_list[i] = pygame.transform.rotate((pygame.image.load("assets/alien.png")), 90)
                     aliens.alien_bool[i] = "No_collision"
                     aliens.alien_timer[i] = 0
+
+        # visual feedback from collision for enemy (type 2)
+        for i in range(enemy_numb_2):
+            if aliens2.alien_bool[i] == "Yes_collision":
+                aliens2.alien_timer[i] += 1
+                if aliens2.alien_timer[i] == 25:
+                    aliens2.alien_list[i] = pygame.transform.rotate((pygame.image.load("assets/alien_second.png")), 90)
+                    aliens2.alien_bool[i] = "No_collision"
+                    aliens2.alien_timer[i] = 0
 
         # visual feedback from collision for player
         if player.bool == "Yes_collision":
@@ -1663,19 +1711,6 @@ def level_2():
 
             text = assets.font6.render("Press enter to progress to next level", True, (205, 51, 51))
             assets.screen.blit(text, (200, 640))
-
-            # press enter to progress to next level
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_RETURN:
-                        run = False
-                        del drops
-                        del aliens
-                        del explode
-                        del boss
-                        del wpn1
-                        del wpn2
-                        level_1_intro()
 
         # LAUNCH ALL AND GAME OVER CONDITION
         # if player HP is less than 0 game is over
