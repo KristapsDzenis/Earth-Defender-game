@@ -1062,12 +1062,12 @@ def level_2():
 
                 # press enter to progress to next level if boss defeated
                 if event.key == pygame.K_RETURN:
-                    if boss.boss_HP <= 0:
+                    if boss2.boss2_HP <= 0:
                         run = False
                         del drops
                         del aliens
                         del explode
-                        del boss
+                        del boss2
                         del wpn1
                         del wpn2
                         level_2_intro()
@@ -1288,54 +1288,54 @@ def level_2():
 
         # BOSS LOOPS
         # boss intro
-        if boss.boss_level == False and boss.start_phase == True:
+        if boss2.boss_level == False and boss2.start_phase == True:
             # static intro movement
-            boss.bossY += boss.bossY_change
-            boss.bossX += boss.bossX_change
-            boss.bossX_change = -0.5
+            boss2.bossY += boss2.bossY_change
+            boss2.bossX += boss2.bossX_change
+            boss2.bossX_change = -0.5
             # collision feedback from boss
-            if boss.boss_HP > 0:
-                if boss.boss_bool == "No_collision":
-                    func.boss_second(boss.bossX, boss.bossY)
-                if boss.boss_bool == "Yes_collision":
-                    func.boss2_second(boss.bossX, boss.bossY)
-            if boss.bossX == 600:
-                boss.second_phase = True
-                boss.start_phase = False
+            if boss2.boss2_HP > 0:
+                if boss2.boss_bool == "No_collision":
+                    func.boss_second(boss2.bossX, boss2.bossY)
+                if boss2.boss_bool == "Yes_collision":
+                    func.boss2_second(boss2.bossX, boss2.bossY)
+            if boss2.bossX == 600:
+                boss2.second_phase = True
+                boss2.start_phase = False
         # battle phase
-        if boss.boss_level == False and boss.start_phase == False and boss.second_phase == True:
+        if boss2.boss_level == False and boss2.start_phase == False and boss2.second_phase == True:
             # boss movement
-            boss.bossY += boss.bossY_change
-            boss.bossX += boss.bossX_change
-            func.boss_second(boss.bossX, boss.bossY)
-            if boss.bossY >= 520:
-                boss.bossY_change = -1
-            if boss.bossY <= 0:
-                boss.bossY_change = 1
-            if boss.bossX >= 1000:
-                boss.bossX_change = -1
-            if boss.bossX <= 600:
-                boss.bossX_change = 1
+            boss2.bossY += boss2.bossY_change
+            boss2.bossX += boss2.bossX_change
+            func.boss_second(boss2.bossX, boss2.bossY)
+            if boss2.bossY >= 520:
+                boss2.bossY_change = -1
+            if boss2.bossY <= 0:
+                boss2.bossY_change = 1
+            if boss2.bossX >= 1000:
+                boss2.bossX_change = -1
+            if boss2.bossX <= 600:
+                boss2.bossX_change = 1
             # random direction change
             numb = random.randint(1, 450)
             if numb == 1:
-                boss.bossX_change = -1
+                boss2.bossX_change = -1
             if numb == 2:
-                boss.bossX_change = 1
+                boss2.bossX_change = 1
             if numb == 3:
-                boss.bossY_change = -1
+                boss2.bossY_change = -1
             if numb == 4:
-                boss.bossY_change = 1
+                boss2.bossY_change = 1
 
             # boss fire with boss behavior, which uses random chance of shot and defined range where to shoot
             # first weapon type
-            InRange_2 = func.Range(player.y, boss.bossY)
+            InRange_2 = func.Range(player.y, boss2.bossY)
             numb3 = random.randint(1, 50)
             if InRange_2 and numb3 == 5:
                 # top gun
                 wpn1.boss_ammo_counter_top += 1
-                wpn1.bossY_ammo_numb_top = boss.bossY
-                wpn1.bossX_ammo_numb_top = boss.bossX
+                wpn1.bossY_ammo_numb_top = boss2.bossY
+                wpn1.bossX_ammo_numb_top = boss2.bossX
                 # adds new elements at teh end of the list
                 for i in range(1):
                     wpn1.boss_ammo_top.append(assets.boss_ammo)
@@ -1345,8 +1345,8 @@ def level_2():
 
                 # bottom gun
                 wpn1.boss_ammo_counter_bottom += 1
-                wpn1.bossY_ammo_numb_bottom = boss.bossY
-                wpn1.bossX_ammo_numb_bottom = boss.bossX
+                wpn1.bossY_ammo_numb_bottom = boss2.bossY
+                wpn1.bossX_ammo_numb_bottom = boss2.bossX
                 # adds new elements at teh end of the list
                 for i in range(1):
                     wpn1.boss_ammo_bottom.append(assets.boss_ammo)
@@ -1387,15 +1387,15 @@ def level_2():
                         wpn1.boss_ammo_counter_bottom -= 1
 
             # second weapon type
-            if boss.boss_HP < 50:
-                InRange_2 = func.Range(player.y, boss.bossY)
+            if boss2.boss_HP < 50:
+                InRange_2 = func.Range(player.y, boss2.bossY)
                 numb4 = random.randint(1, 75)
                 if InRange_2 and numb4 == 5:
 
                     # top gun
                     wpn2.boss_ammo_counter_top += 1
-                    wpn2.bossY_ammo_numb_2_top = boss.bossY
-                    wpn2.bossX_ammo_numb_2_top = boss.bossX
+                    wpn2.bossY_ammo_numb_2_top = boss2.bossY
+                    wpn2.bossX_ammo_numb_2_top = boss2.bossX
                     # adds new elements at teh end of the list
                     for i in range(1):
                         wpn2.boss_ammo_top.append(assets.boss_laser)
@@ -1405,8 +1405,8 @@ def level_2():
 
                     # bottom gun
                     wpn2.boss_ammo_counter_bottom += 1
-                    wpn2.bossY_ammo_numb_bottom = boss.bossY
-                    wpn2.bossX_ammo_numb_bottom = boss.bossX
+                    wpn2.bossY_ammo_numb_bottom = boss2.bossY
+                    wpn2.bossX_ammo_numb_bottom = boss2.bossX
                     # adds new elements at teh end of the list
                     for i in range(1):
                         wpn2.boss_ammo_bottom.append(assets.boss_laser)
@@ -1447,11 +1447,11 @@ def level_2():
                             wpn2.boss_ammo_counter_bottom -= 1
 
             # collision feedback from boss
-            if boss.boss_HP > 0:
-                if boss.boss_bool == "No_collision":
-                    func.boss_second(boss.bossX, boss.bossY)
-                if boss.boss_bool == "Yes_collision":
-                     func.boss2_second(boss.bossX, boss.bossY)
+            if boss2.boss2_HP > 0:
+                if boss2.boss_bool == "No_collision":
+                    func.boss_second(boss2.bossX, boss2.bossY)
+                if boss2.boss_bool == "Yes_collision":
+                     func.boss2_second(boss2.bossX, boss2.bossY)
 
         # COLLISION
         # for what happens if collision happens (player <-- enemy shots(type 1))
@@ -1573,38 +1573,38 @@ def level_2():
                     player.ammoX_list[j] = 1150
 
         # colisions for players vs boss
-        if boss.boss_level == False and boss.start_phase == False and boss.second_phase == True:
+        if boss2.boss_level == False and boss2.start_phase == False and boss2.second_phase == True:
             # for what happens if collision happens (player shots --> boss)
             for j in range(player.max_ammo):
-                collide6 = func.collision2(boss.bossX, boss.bossY, player.ammoX_list[j],  player.ammoY_list[j])
+                collide6 = func.collision2(boss2.bossX, boss2.bossY, player.ammoX_list[j],  player.ammoY_list[j])
                 # what happens at single impact
                 if collide6:
-                    boss.boss_HP -= 1
+                    boss2.boss_HP -= 1
                     player.score += 1
-                    boss.boss_bool = "Yes_collision"
+                    boss2.boss_bool = "Yes_collision"
                     player.ammoY_list[j] = 750
                     player.ammoX_list[j] = 1150
 
             # for what happens if collision happens (player missile --> boss)
-            collide7 = func.collision2(boss.bossX, boss.bossY, player.missile_x, player.missile_y)
+            collide7 = func.collision2(boss2.bossX, boss2.bossY, player.missile_x, player.missile_y)
             if collide7:
-                boss.boss_HP -= 25
-                boss.boss_bool = "Yes_collision"
+                boss2.boss_HP -= 25
+                boss2.boss_bool = "Yes_collision"
                 player.missile_state = "old"
                 player.missile_x = 0
                 player.missile_y = 380
 
             # for what happens if collision happens (player <--> boss)
-            collide8 = func.collision2(player.x, player.y, boss.bossX, boss.bossY)
+            collide8 = func.collision2(player.x, player.y, boss2.bossX, boss2.bossY)
             if collide8:
                 player.bool = "Yes_collision"
-                boss.boss_HP -= 1
+                boss2.boss_HP -= 1
                 player.hp -= 1
                 player.score += 1
-                boss.boss_bool = "Yes_collision"
+                boss2.boss_bool = "Yes_collision"
 
         # for what happens if collision happens (player <-- boss shots(first weapon stype))
-        if boss.boss_HP > 0:
+        if boss2.boss2_HP > 0:
             for i in range(wpn1.boss_ammo_counter_top):
                 if player.hp > 0:
                     collide9 = func.collision3(player.x, player.y, wpn1.bossX_ammo_top[i], wpn1.bossY_ammo_top[i])
@@ -1668,23 +1668,23 @@ def level_2():
                 player.timer = 0
 
         # visual feedback from collision for boss
-        if boss.boss_bool == "Yes_collision":
-            boss.boss_timer += 1
-            if boss.boss_timer == 25:
-                boss.boss_bool = "No_collision"
-                boss.boss_timer = 0
+        if boss2.boss_bool == "Yes_collision":
+            boss2.boss_timer += 1
+            if boss2.boss_timer == 25:
+                boss2.boss_bool = "No_collision"
+                boss2.boss_timer = 0
 
         # WINNING CONDITIONS
-        if boss.boss_HP <= 0:
-            explode.lastX = boss.bossX
-            explode.lastY = boss.bossY
-            boss.boss_HP = 0
-            boss.end_timer += 1
+        if boss2.boss2_HP <= 0:
+            explode.lastX = boss2.bossX
+            explode.lastY = boss2.bossY
+            boss2.boss2_HP = 0
+            boss2.end_timer += 1
 
-            if boss.end_timer == 1:
-                boss.boss_level = False
-                boss.start_phase = False
-                boss.second_phase = False
+            if boss2.end_timer == 1:
+                boss2.boss_level = False
+                boss2.start_phase = False
+                boss2.second_phase = False
                 player.score += 100
                 explode.cub_numb += 500
                 func.place_cubes_boss(explode.lastX, explode.lastY, explode.cubeX_list, explode.cubeY_list, explode.cube_list,
