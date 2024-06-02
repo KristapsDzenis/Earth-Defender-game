@@ -47,7 +47,7 @@ def start():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     run = False
-                    level_2_intro()
+                    level_1_intro()
 
         # updates display each frame
         pygame.display.update()
@@ -78,7 +78,7 @@ def level_1_intro():
         clock.tick(100)
 
 # level 2 intro screen loop
-def level_2_intro():
+def level_2_intro(player):
     timer = 0
     run = True
     while run == True:
@@ -93,7 +93,7 @@ def level_2_intro():
 
         if timer == 300:
             run = False
-            level_2()
+            level_2(player)
 
         # updates display each frame
         pygame.display.update()
@@ -861,9 +861,9 @@ def level_1():
 
 
 # main loop for level 2
-def level_2():
+def level_2(player):
     # initialise all objects
-    player = stats.Player()
+    #player = stats.Player()
     drops = stats.Drops()
     aliens = stats.Aliens()
     aliens2 = stats.Aliens_2()
@@ -881,7 +881,7 @@ def level_2():
     enemy_count_2 = 0
     enemy_wave = False
 
-    timer = 10500
+    timer = 0
     run = True
     while run == True:
         # background ,UI elements
@@ -1809,7 +1809,7 @@ def game_over(score):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     run = False
-                    level_2_intro()
+                    level_1_intro()
 
         # updates display each frame
         pygame.display.update()
