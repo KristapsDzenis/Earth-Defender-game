@@ -979,7 +979,7 @@ def level_2():
             boss2.bossX_change = 0
             boss2.bossY_change = 0
             # collision feedback from boss
-            if boss2.boss_HP > 0:
+            if boss2.boss2_HP > 0:
                 if boss2.boss_bool == "No_collision":
                     func.boss_second(boss2.bossX, boss2.bossY)
                 if boss2.boss_bool == "Yes_collision":
@@ -1387,7 +1387,7 @@ def level_2():
                         wpn1.boss_ammo_counter_bottom -= 1
 
             # second weapon type
-            if boss2.boss_HP < 50:
+            if boss2.boss2_HP < 200:
                 InRange_2 = func.Range(player.y, boss2.bossY)
                 numb4 = random.randint(1, 75)
                 if InRange_2 and numb4 == 5:
@@ -1579,7 +1579,7 @@ def level_2():
                 collide6 = func.collision2(boss2.bossX, boss2.bossY, player.ammoX_list[j],  player.ammoY_list[j])
                 # what happens at single impact
                 if collide6:
-                    boss2.boss_HP -= 1
+                    boss2.boss2_HP -= 1
                     player.score += 1
                     boss2.boss_bool = "Yes_collision"
                     player.ammoY_list[j] = 750
@@ -1588,7 +1588,7 @@ def level_2():
             # for what happens if collision happens (player missile --> boss)
             collide7 = func.collision2(boss2.bossX, boss2.bossY, player.missile_x, player.missile_y)
             if collide7:
-                boss2.boss_HP -= 25
+                boss2.boss2_HP -= 25
                 boss2.boss_bool = "Yes_collision"
                 player.missile_state = "old"
                 player.missile_x = 0
@@ -1598,7 +1598,7 @@ def level_2():
             collide8 = func.collision2(player.x, player.y, boss2.bossX, boss2.bossY)
             if collide8:
                 player.bool = "Yes_collision"
-                boss2.boss_HP -= 1
+                boss2.boss2_HP -= 1
                 player.hp -= 1
                 player.score += 1
                 boss2.boss_bool = "Yes_collision"
