@@ -47,7 +47,7 @@ def start():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     run = False
-                    level_1_intro()
+                    level_2_intro()
 
         # updates display each frame
         pygame.display.update()
@@ -78,7 +78,7 @@ def level_1_intro():
         clock.tick(100)
 
 # level 2 intro screen loop
-def level_2_intro(player):
+def level_2_intro():
     timer = 0
     run = True
     while run == True:
@@ -93,7 +93,7 @@ def level_2_intro(player):
 
         if timer == 300:
             run = False
-            level_2(player)
+            level_2()
 
         # updates display each frame
         pygame.display.update()
@@ -861,14 +861,14 @@ def level_1():
 
 
 # main loop for level 2
-def level_2(player):
+def level_2():
     # initialise all objects
-    #player = stats.Player()
+    player = stats.Player()
     drops = stats.Drops()
     aliens = stats.Aliens()
     aliens2 = stats.Aliens_2()
     explode = stats.Explosions()
-    boss = stats.level1_Boss()
+    boss2 = stats.level2_Boss()
     wpn1 = stats.level1_Boss_Wpn1()
     wpn2 = stats.level1_Boss_Wpn2()
     player.x = 0
@@ -881,7 +881,7 @@ def level_2(player):
     enemy_count_2 = 0
     enemy_wave = False
 
-    timer = 0
+    timer = 10500
     run = True
     while run == True:
         # background ,UI elements
@@ -927,7 +927,7 @@ def level_2(player):
 
         # boss level spawn
         if timer == 11000:
-            boss.boss_level = True
+            boss2.boss_level = True
             drops.ammo_drop_count += 1
             for i in range(drops.ammo_drop_count):
                 drops.ammo_drop_list.append(assets.bullet_drop)
@@ -973,19 +973,19 @@ def level_2(player):
                         enemy_wave = False
 
         # place boss on screen
-        if boss.boss_level == True:
-            boss.bossX = 1200
-            boss.bossY = 250
-            boss.bossX_change = 0
-            boss.bossY_change = 0
+        if boss2.boss_level == True:
+            boss2.bossX = 1200
+            boss2.bossY = 250
+            boss2.bossX_change = 0
+            boss2.bossY_change = 0
             # collision feedback from boss
-            if boss.boss_HP > 0:
-                if boss.boss_bool == "No_collision":
-                    func.boss(boss.bossX, boss.bossY)
-                if boss.boss_bool == "Yes_collision":
-                    func.boss2(boss.bossX, boss.bossY)
-            boss.boss_level = False
-            boss.start_phase = True
+            if boss2.boss_HP > 0:
+                if boss2.boss_bool == "No_collision":
+                    func.boss_second(boss2.bossX, boss2.bossY)
+                if boss2.boss_bool == "Yes_collision":
+                    func.boss2_second(boss2.bossX, boss2.bossY)
+            boss2.boss_level = False
+            boss2.start_phase = True
 
         # tracks explosion debris on screen
         for i in range(explode.cub_numb):
@@ -1070,7 +1070,7 @@ def level_2(player):
                         del boss
                         del wpn1
                         del wpn2
-                        level_1_intro()
+                        level_2_intro()
 
             # for when keys are released
             if event.type == pygame.KEYUP:
@@ -1296,9 +1296,9 @@ def level_2(player):
             # collision feedback from boss
             if boss.boss_HP > 0:
                 if boss.boss_bool == "No_collision":
-                    func.boss(boss.bossX, boss.bossY)
+                    func.boss_second(boss.bossX, boss.bossY)
                 if boss.boss_bool == "Yes_collision":
-                    func.boss2(boss.bossX, boss.bossY)
+                    func.boss2_second(boss.bossX, boss.bossY)
             if boss.bossX == 600:
                 boss.second_phase = True
                 boss.start_phase = False
@@ -1307,7 +1307,7 @@ def level_2(player):
             # boss movement
             boss.bossY += boss.bossY_change
             boss.bossX += boss.bossX_change
-            func.boss(boss.bossX, boss.bossY)
+            func.boss_second(boss.bossX, boss.bossY)
             if boss.bossY >= 520:
                 boss.bossY_change = -1
             if boss.bossY <= 0:
@@ -1449,9 +1449,9 @@ def level_2(player):
             # collision feedback from boss
             if boss.boss_HP > 0:
                 if boss.boss_bool == "No_collision":
-                    func.boss(boss.bossX, boss.bossY)
+                    func.boss_second(boss.bossX, boss.bossY)
                 if boss.boss_bool == "Yes_collision":
-                     func.boss2(boss.bossX, boss.bossY)
+                     func.boss2_second(boss.bossX, boss.bossY)
 
         # COLLISION
         # for what happens if collision happens (player <-- enemy shots(type 1))
@@ -1809,7 +1809,7 @@ def game_over(score):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     run = False
-                    level_1()
+                    level_2_intro()
 
         # updates display each frame
         pygame.display.update()

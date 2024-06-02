@@ -57,6 +57,14 @@ def boss(x, y):
 def boss2(x, y):
     assets.screen.blit(assets.boss_ass_2, (x, y))
 
+# boss
+def boss_second(x, y):
+    assets.screen.blit(assets.boss_2_ass, (x, y))
+
+# boss if collision
+def boss2_second(x, y):
+    assets.screen.blit(assets.boss_2_ass_2, (x, y))
+
 # boss fire function (top gun)
 def boss_fire(x, y, i, boss_ammo_top):
     assets.screen.blit(boss_ammo_top[i], (x + 100, y + 0))

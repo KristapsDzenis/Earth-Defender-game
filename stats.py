@@ -93,6 +93,11 @@ class level1_Boss:
         self.boss_timer = 0
         self.end_timer = 0
 
+class level2_Boss(level1_Boss):
+    def __init__(self):
+        level1_Boss.__init__(self)
+        self.boss2_HP = 300  # 300
+
 # class for boss's first type weapons
 class level1_Boss_Wpn1:
     def __init__(self):
