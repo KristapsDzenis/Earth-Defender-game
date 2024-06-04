@@ -43,7 +43,7 @@ class Drops:
         self.missile_drop_numbX = []
         self.missile_drop_numbY = []
 
-# class for alien attributes and lists
+# class for alien type 1 attributes and lists
 class Aliens:
     def __init__(self):
         self.alien_list = []
@@ -60,6 +60,11 @@ class Aliens:
         self.alienBool_ammo = []
         self.alienX_ammoChange = 3.5
         self.max_enemy_ammo = 0
+
+class Aliens_2(Aliens):
+    def __init__(self):
+        Aliens.__init__(self)
+        self.alienX_ammoChange_2 = 5.5
 
 # class for sprites used in explosions
 class Explosions:
@@ -87,6 +92,16 @@ class level1_Boss:
         self.boss_bool = "No_collision"
         self.boss_timer = 0
         self.end_timer = 0
+
+class level2_Boss(level1_Boss):
+    def __init__(self):
+        level1_Boss.__init__(self)
+        self.boss2_HP = 300  # 300
+        self.boss_phase_ammo_drop = True
+        self.tg_laser_active = False
+        self.death_laser_active = False
+        self.tging_timer = 0
+        self.death_laser_timer = 0
 
 # class for boss's first type weapons
 class level1_Boss_Wpn1:

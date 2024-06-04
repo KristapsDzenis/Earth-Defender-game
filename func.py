@@ -57,6 +57,14 @@ def boss(x, y):
 def boss2(x, y):
     assets.screen.blit(assets.boss_ass_2, (x, y))
 
+# boss
+def boss_second(x, y):
+    assets.screen.blit(assets.boss_2_ass, (x, y))
+
+# boss if collision
+def boss2_second(x, y):
+    assets.screen.blit(assets.boss_2_ass_2, (x, y))
+
 # boss fire function (top gun)
 def boss_fire(x, y, i, boss_ammo_top):
     assets.screen.blit(boss_ammo_top[i], (x + 100, y + 0))
@@ -72,6 +80,14 @@ def boss_laser(x, y, i, boss_ammo_top):
 # boss fire function for second weapond type (bottom gun)
 def boss_laser_2(x, y, i, boss_ammo_bottom):
     assets.screen.blit(boss_ammo_bottom[i], (x + 80, y + 105))
+
+# boss laser target function
+def boss_target_sys(x, y):
+    assets.screen.blit(assets.boss_target_sys, (x - 950, y + 100))
+
+# boss death laser function
+def boss_death_laser(x, y):
+    assets.screen.blit(assets.death_laser, (x - 1100, y + 84))
 
 # enemy
 def enemy(x, y, i, alien_list):
@@ -141,6 +157,13 @@ def collision6(x, y, z, i):
     else:
         return False
 
+# collision detection ( player <-- boss death laser )
+def collision7(x, y):
+    if y <= x <= y + 32:
+        return True
+    else:
+        return False
+
 # in range for shot detection for enemies/ boss
 def Range(x, y):
     distance = (x + 10) - y
@@ -204,7 +227,7 @@ def place_cubes_boss(lastX, lastY, cubeX_list, cubeY_list, cube_list, cubeX_chan
 def explosion(x, y, i, cube_list):
     assets.screen.blit(cube_list[i], (x, y))
 
-# create enemies function
+# create enemies type 1 function
 def create_enemy(enemy_count,  alien_list, alienX_list, alienY_list, alienHP_list, alienY_change, alienX_change, alien_bool,
                  alien_timer, alien_ammo, alienBool_ammo, alienY_ammo, alienX_ammo):
     for i in range(enemy_count):
@@ -220,5 +243,24 @@ def create_enemy(enemy_count,  alien_list, alienX_list, alienY_list, alienHP_lis
         alien_ammo.append(pygame.image.load("assets/alien_shot.png"))
         alienBool_ammo.append("old")
     for i in range(enemy_count):
+        alienY_ammo.append(alienY_list[i])
+        alienX_ammo.append(alienX_list[i])
+
+# create enemies type 2 function
+def create_enemy_2(enemy_count_2,  alien_list, alienX_list, alienY_list, alienHP_list, alienY_change, alienX_change, alien_bool,
+                 alien_timer, alien_ammo, alienBool_ammo, alienY_ammo, alienX_ammo):
+    for i in range(enemy_count_2):
+        alien_list.append(pygame.transform.rotate((pygame.image.load("assets/alien_second.png")), 90))
+        alienX_list.append(random.randint(1200, 1400))
+        alienY_list.append(random.randint(0, 640))
+        alienHP_list.append(30)
+        # ENEMY SPEED
+        alienY_change.append(0)
+        alienX_change.append(1)
+        alien_bool.append("No_collision")
+        alien_timer.append(0)
+        alien_ammo.append(pygame.image.load("assets/alien_shot.png"))
+        alienBool_ammo.append("old")
+    for i in range(enemy_count_2):
         alienY_ammo.append(alienY_list[i])
         alienX_ammo.append(alienX_list[i])
