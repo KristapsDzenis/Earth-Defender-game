@@ -941,6 +941,28 @@ def level_2(player):
                 drops.missile_drop_numbY.append(random.randint(0, 640))
                 func.ammo_drop(drops.missile_drop_numbX[i], drops.missile_drop_numbY[i], i, drops.missile_drop_list)
 
+        # supply drop during boss battle
+        if boss2.boss2_HP == 200 and boss2.boss_phase_ammo_drop == True:
+            boss2.boss_phase_ammo_drop = False
+            drops.HP_drop_count += 1
+            for i in range(drops.HP_drop_count):
+                drops.HP_drop_list.append(assets.HP_drop_i)
+                drops.drop_numbX.append(random.randint(0, 550))
+                drops.drop_numbY.append(random.randint(0, 640))
+                func.HP_drop(drops.drop_numbX[i], drops.drop_numbY[i], i, drops.HP_drop_list)
+            drops.ammo_drop_count += 1
+            for i in range(drops.ammo_drop_count):
+                drops.ammo_drop_list.append(assets.bullet_drop)
+                drops.ammo_drop_numbX.append(random.randint(0, 550))
+                drops.ammo_drop_numbY.append(random.randint(0, 640))
+                func.ammo_drop(drops.ammo_drop_numbX[i], drops.ammo_drop_numbY[i], i, drops.ammo_drop_list)
+            drops.missile_drop_count += 1
+            for i in range(drops.missile_drop_count):
+                drops.missile_drop_list.append(assets.missile_drop)
+                drops.missile_drop_numbX.append(random.randint(0, 550))
+                drops.missile_drop_numbY.append(random.randint(0, 640))
+                func.ammo_drop(drops.missile_drop_numbX[i], drops.missile_drop_numbY[i], i, drops.missile_drop_list)
+
         # place enemies on screen
         if enemy_wave == True:
             # for type 1 enemies
@@ -1070,7 +1092,7 @@ def level_2(player):
                         del boss2
                         del wpn1
                         del wpn2
-                        level_2_intro()
+                        level_1_intro()
 
             # for when keys are released
             if event.type == pygame.KEYUP:
@@ -1446,6 +1468,37 @@ def level_2(player):
                             del wpn2.boss_bool_bottom[j]
                             wpn2.boss_ammo_counter_bottom -= 1
 
+            # death laser weapon type
+            if boss2.boss2_HP < 100:
+                InRange_3 = func.Range(player.y, boss2.bossY)
+                numb4 = random.randint(1, 800)
+                # places targeting laser on screen
+                if InRange_3 and numb4 == 5 and boss2.tg_laser_active == False and boss2.death_laser_active == False:
+                    func.boss_target_sys(boss2.bossX, boss2.bossY)
+                    boss2.tg_laser_active = True
+
+                # RELEASE DEATH LASER
+                if boss2.tging_timer == 300:
+                    boss2.tg_laser_active = False
+                    boss2.tging_timer = 0
+                    func.boss_death_laser(boss2.bossX, boss2.bossY)
+                    boss2.death_laser_active = True
+
+                # turn off death laser
+                if boss2.death_laser_timer == 300:
+                    boss2.death_laser_active = False
+                    boss2.death_laser_timer = 0
+
+            # tracks targeting laser on screen
+            if boss2.tg_laser_active == True:
+                func.boss_target_sys(boss2.bossX, boss2.bossY)
+                boss2.tging_timer += 1 # targeting timer
+
+            # tracks death laser on screeen
+            if boss2.death_laser_active == True:
+                func.boss_death_laser(boss2.bossX, boss2.bossY)
+                boss2.death_laser_timer += 1
+
             # collision feedback from boss
             if boss2.boss2_HP > 0:
                 if boss2.boss_bool == "No_collision":
@@ -1642,6 +1695,14 @@ def level_2(player):
                         wpn2.bossY_ammo_bottom[i] = 0
                         wpn2.bossX_ammo_bottom[i] = -100
 
+        # for what happens if collision happens ( player <-- boss death laser )
+        if boss2.death_laser_active == True:
+            if player.hp > 0:
+                collide18 = func.collision7(player.y, boss2.bossY)
+                if collide18:
+                    player.hp -= 1
+                    player.bool = "Yes_collision"
+
         # visual feedback from collision for enemy (type 1)
         for i in range(enemy_numb):
             if aliens.alien_bool[i] == "Yes_collision":
@@ -1696,7 +1757,7 @@ def level_2(player):
                     drops.drop_numbX.append(random.randint(200, 1000))
                     drops.drop_numbY.append(random.randint(0, 640))
                     func.HP_drop(drops.drop_numbX[i], drops.drop_numbY[i], i, drops.HP_drop_list)
-                drops.ammo_drop_count += 2
+                drops.ammo_drop_count += 3
                 for i in range(drops.ammo_drop_count):
                     drops.ammo_drop_list.append(assets.bullet_drop)
                     drops.ammo_drop_numbX.append(random.randint(200, 1000))

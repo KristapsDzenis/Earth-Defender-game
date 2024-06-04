@@ -30,3 +30,5 @@ boss_2_ass = pygame.transform.rotate((pygame.image.load("assets/boss_2.png")), 9
 boss_2_ass_2 = pygame.transform.rotate((pygame.image.load("assets/boss_2_2.png")), 90)
 boss_ammo = pygame.image.load("assets/alien_shot.png")
 boss_laser = pygame.image.load("assets/laser.jpg")
+boss_target_sys = pygame.image.load("assets/target_laser.png")
+death_laser = pygame.image.load("assets/death_laser.png")

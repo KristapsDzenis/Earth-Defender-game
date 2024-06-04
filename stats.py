@@ -97,6 +97,11 @@ class level2_Boss(level1_Boss):
     def __init__(self):
         level1_Boss.__init__(self)
         self.boss2_HP = 300  # 300
+        self.boss_phase_ammo_drop = True
+        self.tg_laser_active = False
+        self.death_laser_active = False
+        self.tging_timer = 0
+        self.death_laser_timer = 0
 
 # class for boss's first type weapons
 class level1_Boss_Wpn1:

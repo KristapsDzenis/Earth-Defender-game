@@ -81,6 +81,14 @@ def boss_laser(x, y, i, boss_ammo_top):
 def boss_laser_2(x, y, i, boss_ammo_bottom):
     assets.screen.blit(boss_ammo_bottom[i], (x + 80, y + 105))
 
+# boss laser target function
+def boss_target_sys(x, y):
+    assets.screen.blit(assets.boss_target_sys, (x - 950, y + 100))
+
+# boss death laser function
+def boss_death_laser(x, y):
+    assets.screen.blit(assets.death_laser, (x - 1100, y + 84))
+
 # enemy
 def enemy(x, y, i, alien_list):
     assets.screen.blit(alien_list[i], (x, y))
@@ -145,6 +153,13 @@ def collision5(x, y, z, i):
 def collision6(x, y, z, i):
     distance = math.sqrt((math.pow(x - z - 80, 2)) + (math.pow(y - i - 105, 2)))
     if distance < 27:
+        return True
+    else:
+        return False
+
+# collision detection ( player <-- boss death laser )
+def collision7(x, y):
+    if y <= x <= y + 32:
         return True
     else:
         return False
