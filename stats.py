@@ -9,7 +9,7 @@ class Player:
         self.y_change = 0
         self.bool = "No_collision"
         self.timer = 0
-        self.hp = 10
+        self.hp = 10  #10
         self.ammo = 1000
         self.missile_ammo = 3
         self.score = 0
@@ -93,6 +93,7 @@ class level1_Boss:
         self.boss_timer = 0
         self.end_timer = 0
 
+# Level 2 boss class containing all attributes for boss, inheriting attributes from Level 1 boss
 class level2_Boss(level1_Boss):
     def __init__(self):
         level1_Boss.__init__(self)
@@ -102,6 +103,13 @@ class level2_Boss(level1_Boss):
         self.death_laser_active = False
         self.tging_timer = 0
         self.death_laser_timer = 0
+
+# Level 3 boss class containing all attributes for boss, inheriting attributes from Level 1 and Level2 boses
+class level3_Boss(level2_Boss):
+    def __init__(self):
+        level2_Boss.__init__(self)
+        self.boss3_HP = 500  # 500
+        self.last_wave = True
 
 # class for boss's first type weapons
 class level1_Boss_Wpn1:
