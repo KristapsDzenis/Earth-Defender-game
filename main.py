@@ -44,10 +44,10 @@ def start():
             if event.type == pygame.QUIT:
                 run = False
             # press enter to start game
-            if event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYUP:
                 if event.key == pygame.K_RETURN:
                     run = False
-                    level_3_intro()
+                    level_1_intro()
 
         # updates display each frame
         pygame.display.update()
@@ -1869,14 +1869,13 @@ def level_2(player):
         clock.tick(100)
 
 # main loop for level 3
-def level_3():
+def level_3(player):
     # initialise all objects
-    player = stats.Player()
     drops = stats.Drops()
     aliens = stats.Aliens()
     aliens2 = stats.Aliens_2()
     explode = stats.Explosions()
-    boss2 = stats.level2_Boss()
+    boss3 = stats.level3_Boss()
     wpn1 = stats.level1_Boss_Wpn1()
     wpn2 = stats.level1_Boss_Wpn2()
     player.x = 0
@@ -1889,7 +1888,7 @@ def level_3():
     enemy_count_2 = 0
     enemy_wave = False
 
-    timer = 0
+    timer = 11500
     run = True
     while run == True:
         # background ,UI elements
@@ -1907,10 +1906,10 @@ def level_3():
 
         # second enemy wave spawn
         if timer == 3000:
-            enemy_numb += 12
-            enemy_count = 12
-            enemy_numb_2 += 6
-            enemy_count_2 = 6
+            enemy_numb += 15
+            enemy_count = 15
+            enemy_numb_2 += 4
+            enemy_count_2 = 4
             enemy_wave = True
             # spawn extra life for player
             drops.HP_drop_count += 1
@@ -1922,10 +1921,10 @@ def level_3():
 
         # third enemy wave spawn
         if timer == 7000:
-            enemy_numb += 12
-            enemy_count = 12
-            enemy_numb_2 += 6
-            enemy_count_2 = 6
+            enemy_numb += 15
+            enemy_count = 15
+            enemy_numb_2 += 5
+            enemy_count_2 = 5
             enemy_wave = True
             # spawn extra ammunition for player
             drops.ammo_drop_count += 1
@@ -1936,8 +1935,8 @@ def level_3():
                 func.ammo_drop(drops.ammo_drop_numbX[i], drops.ammo_drop_numbY[i], i, drops.ammo_drop_list)
 
         # boss level spawn
-        if timer == 13000:
-            boss2.boss_level = True
+        if timer == 12000:
+            boss3.boss_level = True
             drops.ammo_drop_count += 1
             for i in range(drops.ammo_drop_count):
                 drops.ammo_drop_list.append(assets.bullet_drop)
@@ -1952,26 +1951,29 @@ def level_3():
                 func.ammo_drop(drops.missile_drop_numbX[i], drops.missile_drop_numbY[i], i, drops.missile_drop_list)
 
         # supply drop during boss battle
-        if boss2.boss2_HP == 200 and boss2.boss_phase_ammo_drop == True:
-            boss2.boss_phase_ammo_drop = False
-            drops.HP_drop_count += 1
+        if boss3.boss3_HP == 350 and boss3.boss_phase_ammo_drop == True:
+            enemy_numb = 10
+            enemy_count = 10
+            enemy_wave = True
+            boss3.boss_phase_ammo_drop = False
+            drops.HP_drop_count += 2
             for i in range(drops.HP_drop_count):
                 drops.HP_drop_list.append(assets.HP_drop_i)
                 drops.drop_numbX.append(random.randint(0, 550))
                 drops.drop_numbY.append(random.randint(0, 640))
                 func.HP_drop(drops.drop_numbX[i], drops.drop_numbY[i], i, drops.HP_drop_list)
-            drops.ammo_drop_count += 1
+            drops.ammo_drop_count += 2
             for i in range(drops.ammo_drop_count):
                 drops.ammo_drop_list.append(assets.bullet_drop)
                 drops.ammo_drop_numbX.append(random.randint(0, 550))
                 drops.ammo_drop_numbY.append(random.randint(0, 640))
                 func.ammo_drop(drops.ammo_drop_numbX[i], drops.ammo_drop_numbY[i], i, drops.ammo_drop_list)
-            drops.missile_drop_count += 1
-            for i in range(drops.missile_drop_count):
-                drops.missile_drop_list.append(assets.missile_drop)
-                drops.missile_drop_numbX.append(random.randint(0, 550))
-                drops.missile_drop_numbY.append(random.randint(0, 640))
-                func.ammo_drop(drops.missile_drop_numbX[i], drops.missile_drop_numbY[i], i, drops.missile_drop_list)
+
+        if boss3.boss3_HP == 200 and boss3.last_wave == True:
+            enemy_numb = 10
+            enemy_count = 10
+            enemy_wave = True
+            boss3.last_wave = False
 
         # place enemies on screen
         if enemy_wave == True:
@@ -2005,19 +2007,19 @@ def level_3():
                         enemy_wave = False
 
         # place boss on screen
-        if boss2.boss_level == True:
-            boss2.bossX = 1200
-            boss2.bossY = 250
-            boss2.bossX_change = 0
-            boss2.bossY_change = 0
+        if boss3.boss_level == True:
+            boss3.bossX = 1200
+            boss3.bossY = 250
+            boss3.bossX_change = 0
+            boss3.bossY_change = 0
             # collision feedback from boss
-            if boss2.boss2_HP > 0:
-                if boss2.boss_bool == "No_collision":
-                    func.boss_second(boss2.bossX, boss2.bossY)
-                if boss2.boss_bool == "Yes_collision":
-                    func.boss2_second(boss2.bossX, boss2.bossY)
-            boss2.boss_level = False
-            boss2.start_phase = True
+            if boss3.boss2_HP > 0:
+                if boss3.boss_bool == "No_collision":
+                    func.mothership(boss3.bossX, boss3.bossY)
+                if boss3.boss_bool == "Yes_collision":
+                    func.mothership(boss3.bossX, boss3.bossY)
+            boss3.boss_level = False
+            boss3.start_phase = True
 
         # tracks explosion debris on screen
         for i in range(explode.cub_numb):
@@ -2092,18 +2094,6 @@ def level_3():
                         player.missile_x = player.x
                         func.missile_fire(player.missile_x, player.missile_y)
 
-                # press enter to progress to next level if boss defeated
-                if event.key == pygame.K_RETURN:
-                    if boss2.boss2_HP <= 0:
-                        run = False
-                        del drops
-                        del aliens
-                        del explode
-                        del boss2
-                        del wpn1
-                        del wpn2
-                        level_1_intro()
-
             # for when keys are released
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
@@ -2112,6 +2102,17 @@ def level_3():
                     player.y_change = 0.0
                 if event.key == pygame.K_SPACE:
                     player.max_ammo += 0
+                # press enter to progress to next level if boss defeated
+                if event.key == pygame.K_RETURN:
+                    if boss3.boss3_HP <= 0:
+                        run = False
+                        del drops
+                        del aliens
+                        del explode
+                        del boss3
+                        del wpn1
+                        del wpn2
+                        game_win(player.score)
 
         # tracks player change on screen
         player.x += player.x_change
@@ -2320,77 +2321,78 @@ def level_3():
 
         # BOSS LOOPS
         # boss intro
-        if boss2.boss_level == False and boss2.start_phase == True:
+        if boss3.boss_level == False and boss3.start_phase == True:
             # static intro movement
-            boss2.bossY += boss2.bossY_change
-            boss2.bossX += boss2.bossX_change
-            boss2.bossX_change = -0.5
+            boss3.bossY += boss3.bossY_change
+            boss3.bossX += boss3.bossX_change
+            boss3.bossX_change = -0.5
             # collision feedback from boss
-            if boss2.boss2_HP > 0:
-                if boss2.boss_bool == "No_collision":
-                    func.boss_second(boss2.bossX, boss2.bossY)
-                if boss2.boss_bool == "Yes_collision":
-                    func.boss2_second(boss2.bossX, boss2.bossY)
-            if boss2.bossX == 600:
-                boss2.second_phase = True
-                boss2.start_phase = False
+            if boss3.boss3_HP > 0:
+                if boss3.boss_bool == "No_collision":
+                    func.mothership(boss3.bossX, boss3.bossY)
+                if boss3.boss_bool == "Yes_collision":
+                    func.mothership(boss3.bossX, boss3.bossY)
+            if boss3.bossX == 600:
+                boss3.second_phase = True
+                boss3.start_phase = False
         # battle phase
-        if boss2.boss_level == False and boss2.start_phase == False and boss2.second_phase == True:
+        if boss3.boss_level == False and boss3.start_phase == False and boss3.second_phase == True:
             # boss movement
-            boss2.bossY += boss2.bossY_change
-            boss2.bossX += boss2.bossX_change
-            func.boss_second(boss2.bossX, boss2.bossY)
-            if boss2.bossY >= 520:
-                boss2.bossY_change = -1
-            if boss2.bossY <= 0:
-                boss2.bossY_change = 1
-            if boss2.bossX >= 1000:
-                boss2.bossX_change = -1
-            if boss2.bossX <= 600:
-                boss2.bossX_change = 1
+            boss3.bossY += boss3.bossY_change
+            boss3.bossX += boss3.bossX_change
+            func.mothership(boss3.bossX, boss3.bossY)
+            if boss3.bossY >= 400:
+                boss3.bossY_change = -0.5
+            if boss3.bossY <= 0:
+                boss3.bossY_change = 0.5
+            if boss3.bossX >= 1000:
+                boss3.bossX_change = -0.5
+            if boss3.bossX <= 600:
+                boss3.bossX_change = 0.5
             # random direction change
             numb = random.randint(1, 450)
             if numb == 1:
-                boss2.bossX_change = -1
+                boss3.bossX_change = -0.5
             if numb == 2:
-                boss2.bossX_change = 1
+                boss3.bossX_change = 0.5
             if numb == 3:
-                boss2.bossY_change = -1
+                boss3.bossY_change = -0.5
             if numb == 4:
-                boss2.bossY_change = 1
+                boss3.bossY_change = 0.5
 
             # boss fire with boss behavior, which uses random chance of shot and defined range where to shoot
             # first weapon type
-            InRange_2 = func.Range(player.y, boss2.bossY)
-            numb3 = random.randint(1, 50)
-            if InRange_2 and numb3 == 5:
-                # top gun
-                wpn1.boss_ammo_counter_top += 1
-                wpn1.bossY_ammo_numb_top = boss2.bossY
-                wpn1.bossX_ammo_numb_top = boss2.bossX
-                # adds new elements at teh end of the list
-                for i in range(1):
-                    wpn1.boss_ammo_top.append(assets.boss_ammo)
-                    wpn1.bossY_ammo_top.append(wpn1.bossY_ammo_numb_top)
-                    wpn1.bossX_ammo_top.append(wpn1.bossX_ammo_numb_top)
-                    wpn1.boss_bool_top.append("yes")
+            if boss3.boss3_HP > 350:
+                InRange_2 = func.Range(player.y, boss3.bossY)
+                numb3 = random.randint(1, 50)
+                if InRange_2 and numb3 == 5:
+                    # top gun
+                    wpn1.boss_ammo_counter_top += 1
+                    wpn1.bossY_ammo_numb_top = boss3.bossY
+                    wpn1.bossX_ammo_numb_top = boss3.bossX
+                    # adds new elements at teh end of the list
+                    for i in range(1):
+                        wpn1.boss_ammo_top.append(assets.boss_ammo)
+                        wpn1.bossY_ammo_top.append(wpn1.bossY_ammo_numb_top)
+                        wpn1.bossX_ammo_top.append(wpn1.bossX_ammo_numb_top)
+                        wpn1.boss_bool_top.append("yes")
 
-                # bottom gun
-                wpn1.boss_ammo_counter_bottom += 1
-                wpn1.bossY_ammo_numb_bottom = boss2.bossY
-                wpn1.bossX_ammo_numb_bottom = boss2.bossX
-                # adds new elements at teh end of the list
-                for i in range(1):
-                    wpn1.boss_ammo_bottom.append(assets.boss_ammo)
-                    wpn1.bossY_ammo_bottom.append(wpn1.bossY_ammo_numb_bottom)
-                    wpn1.bossX_ammo_bottom.append(wpn1.bossX_ammo_numb_bottom)
-                    wpn1.boss_bool_bottom.append("yes")
+                    # bottom gun
+                    wpn1.boss_ammo_counter_bottom += 1
+                    wpn1.bossY_ammo_numb_bottom = boss3.bossY
+                    wpn1.bossX_ammo_numb_bottom = boss3.bossX
+                    # adds new elements at teh end of the list
+                    for i in range(1):
+                        wpn1.boss_ammo_bottom.append(assets.boss_ammo)
+                        wpn1.bossY_ammo_bottom.append(wpn1.bossY_ammo_numb_bottom)
+                        wpn1.bossX_ammo_bottom.append(wpn1.bossX_ammo_numb_bottom)
+                        wpn1.boss_bool_bottom.append("yes")
 
             #top gun
             # tracks enemy shots on screen
             for i in range(wpn1.boss_ammo_counter_top):
                 if wpn1.boss_bool_top[i] == "yes":
-                    func.boss_fire(wpn1.bossX_ammo_top[i], wpn1.bossY_ammo_top[i], i, wpn1.boss_ammo_top)
+                    func.final_boss_fire(wpn1.bossX_ammo_top[i], wpn1.bossY_ammo_top[i], i, wpn1.boss_ammo_top)
                     wpn1.bossX_ammo_top[i] -= wpn1.bossX_ammoChange
             # removes enemy shots when on edge of window
             for j in range(wpn1.boss_ammo_counter_top - 3):
@@ -2406,7 +2408,7 @@ def level_3():
             # tracks enemy shots on screen
             for i in range(wpn1.boss_ammo_counter_bottom):
                 if wpn1.boss_bool_bottom[i] == "yes":
-                    func.boss_fire_2(wpn1.bossX_ammo_bottom[i], wpn1.bossY_ammo_bottom[i], i, wpn1.boss_ammo_bottom)
+                    func.final_boss_fire_2(wpn1.bossX_ammo_bottom[i], wpn1.bossY_ammo_bottom[i], i, wpn1.boss_ammo_bottom)
                     wpn1.bossX_ammo_bottom[i] -= wpn1.bossX_ammoChange
             # removes enemy shots when on edge of window
             for j in range(wpn1.boss_ammo_counter_bottom - 3):
@@ -2419,15 +2421,15 @@ def level_3():
                         wpn1.boss_ammo_counter_bottom -= 1
 
             # second weapon type
-            if boss2.boss2_HP < 200:
-                InRange_2 = func.Range(player.y, boss2.bossY)
-                numb4 = random.randint(1, 75)
+            if boss3.boss3_HP < 350 and boss3.boss3_HP > 200:
+                InRange_2 = func.Range(player.y, boss3.bossY)
+                numb4 = random.randint(1, 50)
                 if InRange_2 and numb4 == 5:
 
                     # top gun
                     wpn2.boss_ammo_counter_top += 1
-                    wpn2.bossY_ammo_numb_2_top = boss2.bossY
-                    wpn2.bossX_ammo_numb_2_top = boss2.bossX
+                    wpn2.bossY_ammo_numb_2_top = boss3.bossY
+                    wpn2.bossX_ammo_numb_2_top = boss3.bossX
                     # adds new elements at teh end of the list
                     for i in range(1):
                         wpn2.boss_ammo_top.append(assets.boss_laser)
@@ -2437,8 +2439,8 @@ def level_3():
 
                     # bottom gun
                     wpn2.boss_ammo_counter_bottom += 1
-                    wpn2.bossY_ammo_numb_bottom = boss2.bossY
-                    wpn2.bossX_ammo_numb_bottom = boss2.bossX
+                    wpn2.bossY_ammo_numb_bottom = boss3.bossY
+                    wpn2.bossX_ammo_numb_bottom = boss3.bossX
                     # adds new elements at teh end of the list
                     for i in range(1):
                         wpn2.boss_ammo_bottom.append(assets.boss_laser)
@@ -2446,75 +2448,75 @@ def level_3():
                         wpn2.bossX_ammo_bottom.append(wpn2.bossX_ammo_numb_bottom)
                         wpn2.boss_bool_bottom.append("yes")
 
-                # top gun
-                # tracks enemy shots on screen
-                for i in range(wpn2.boss_ammo_counter_top):
-                    if wpn2.boss_bool_top[i] == "yes":
-                        func.boss_laser(wpn2.bossX_ammo_top[i], wpn2.bossY_ammo_top[i], i, wpn2.boss_ammo_top)
-                        wpn2.bossX_ammo_top[i] -= wpn2.bossX_ammoChange_2
-                # removes enemy shots when on edge of window
-                for j in range(wpn2.boss_ammo_counter_top - 3):
-                    if wpn2.boss_bool_top[j] == "yes":
-                        if wpn2.bossX_ammo_top[j] <= -100:
-                            del wpn2.boss_ammo_top[j]
-                            del wpn2.bossY_ammo_top[j]
-                            del wpn2.bossX_ammo_top[j]
-                            del wpn2.boss_bool_top[j]
-                            wpn2.boss_ammo_counter_top -= 1
+            # top gun
+            # tracks enemy shots on screen
+            for i in range(wpn2.boss_ammo_counter_top):
+                if wpn2.boss_bool_top[i] == "yes":
+                    func.final_boss_laser(wpn2.bossX_ammo_top[i], wpn2.bossY_ammo_top[i], i, wpn2.boss_ammo_top)
+                    wpn2.bossX_ammo_top[i] -= wpn2.bossX_ammoChange_2
+            # removes enemy shots when on edge of window
+            for j in range(wpn2.boss_ammo_counter_top - 3):
+                if wpn2.boss_bool_top[j] == "yes":
+                    if wpn2.bossX_ammo_top[j] <= -100:
+                        del wpn2.boss_ammo_top[j]
+                        del wpn2.bossY_ammo_top[j]
+                        del wpn2.bossX_ammo_top[j]
+                        del wpn2.boss_bool_top[j]
+                        wpn2.boss_ammo_counter_top -= 1
 
-                # bottom gun
-                # tracks enemy shots on screen
-                for i in range(wpn2.boss_ammo_counter_bottom):
-                    if wpn2.boss_bool_bottom[i] == "yes":
-                        func.boss_laser_2(wpn2.bossX_ammo_bottom[i], wpn2.bossY_ammo_bottom[i], i, wpn2.boss_ammo_bottom)
-                        wpn2.bossX_ammo_bottom[i] -= wpn2.bossX_ammoChange_2
-                # removes enemy shots when on edge of window
-                for j in range(wpn2.boss_ammo_counter_bottom - 3):
-                    if wpn2.boss_bool_bottom[j] == "yes":
-                        if wpn2.bossX_ammo_bottom[j] <= -100:
-                            del wpn2.boss_ammo_bottom[j]
-                            del wpn2.bossY_ammo_bottom[j]
-                            del wpn2.bossX_ammo_bottom[j]
-                            del wpn2.boss_bool_bottom[j]
-                            wpn2.boss_ammo_counter_bottom -= 1
+            # bottom gun
+            # tracks enemy shots on screen
+            for i in range(wpn2.boss_ammo_counter_bottom):
+                if wpn2.boss_bool_bottom[i] == "yes":
+                    func.final_boss_laser_2(wpn2.bossX_ammo_bottom[i], wpn2.bossY_ammo_bottom[i], i, wpn2.boss_ammo_bottom)
+                    wpn2.bossX_ammo_bottom[i] -= wpn2.bossX_ammoChange_2
+            # removes enemy shots when on edge of window
+            for j in range(wpn2.boss_ammo_counter_bottom - 3):
+                if wpn2.boss_bool_bottom[j] == "yes":
+                    if wpn2.bossX_ammo_bottom[j] <= -100:
+                        del wpn2.boss_ammo_bottom[j]
+                        del wpn2.bossY_ammo_bottom[j]
+                        del wpn2.bossX_ammo_bottom[j]
+                        del wpn2.boss_bool_bottom[j]
+                        wpn2.boss_ammo_counter_bottom -= 1
 
             # death laser weapon type
-            if boss2.boss2_HP < 100:
-                InRange_3 = func.Range(player.y, boss2.bossY)
-                numb4 = random.randint(1, 800)
+            if boss3.boss3_HP < 200:
+                InRange_3 = func.Range(player.y, boss3.bossY)
+                numb4 = random.randint(1, 400)
                 # places targeting laser on screen
-                if InRange_3 and numb4 == 5 and boss2.tg_laser_active == False and boss2.death_laser_active == False:
-                    func.boss_target_sys(boss2.bossX, boss2.bossY)
-                    boss2.tg_laser_active = True
+                if InRange_3 and numb4 == 5 and boss3.tg_laser_active == False and boss3.death_laser_active == False:
+                    func.final_boss_target_sys(boss3.bossX, boss3.bossY)
+                    boss3.tg_laser_active = True
 
                 # RELEASE DEATH LASER
-                if boss2.tging_timer == 300:
-                    boss2.tg_laser_active = False
-                    boss2.tging_timer = 0
-                    func.boss_death_laser(boss2.bossX, boss2.bossY)
-                    boss2.death_laser_active = True
+                if boss3.tging_timer == 300:
+                    boss3.tg_laser_active = False
+                    boss3.tging_timer = 0
+                    func.final_boss_death_laser(boss3.bossX, boss3.bossY)
+                    boss3.death_laser_active = True
 
                 # turn off death laser
-                if boss2.death_laser_timer == 300:
-                    boss2.death_laser_active = False
-                    boss2.death_laser_timer = 0
+                if boss3.death_laser_timer == 300:
+                    boss3.death_laser_active = False
+                    boss3.death_laser_timer = 0
 
             # tracks targeting laser on screen
-            if boss2.tg_laser_active == True:
-                func.boss_target_sys(boss2.bossX, boss2.bossY)
-                boss2.tging_timer += 1 # targeting timer
+            if boss3.tg_laser_active == True:
+                func.final_boss_target_sys(boss3.bossX, boss3.bossY)
+                boss3.tging_timer += 1 # targeting timer
 
             # tracks death laser on screeen
-            if boss2.death_laser_active == True:
-                func.boss_death_laser(boss2.bossX, boss2.bossY)
-                boss2.death_laser_timer += 1
+            if boss3.death_laser_active == True:
+                func.final_boss_death_laser(boss3.bossX, boss3.bossY)
+                boss3.death_laser_timer += 1
 
             # collision feedback from boss
-            if boss2.boss2_HP > 0:
-                if boss2.boss_bool == "No_collision":
-                    func.boss_second(boss2.bossX, boss2.bossY)
-                if boss2.boss_bool == "Yes_collision":
-                     func.boss2_second(boss2.bossX, boss2.bossY)
+            if boss3.boss3_HP > 0:
+                if boss3.boss_bool == "No_collision":
+                    func.mothership(boss3.bossX, boss3.bossY)
+                if boss3.boss_bool == "Yes_collision":
+                     func.mothership_2(boss3.bossX, boss3.bossY)
 
         # COLLISION
         # for what happens if collision happens (player <-- enemy shots(type 1))
@@ -2636,41 +2638,41 @@ def level_3():
                     player.ammoX_list[j] = 1150
 
         # colisions for players vs boss
-        if boss2.boss_level == False and boss2.start_phase == False and boss2.second_phase == True:
+        if boss3.boss_level == False and boss3.start_phase == False and boss3.second_phase == True:
             # for what happens if collision happens (player shots --> boss)
             for j in range(player.max_ammo):
-                collide6 = func.collision2(boss2.bossX, boss2.bossY, player.ammoX_list[j],  player.ammoY_list[j])
+                collide6 = func.collision8(boss3.bossX, boss3.bossY, player.ammoX_list[j],  player.ammoY_list[j])
                 # what happens at single impact
                 if collide6:
-                    boss2.boss2_HP -= 1
+                    boss3.boss3_HP -= 1
                     player.score += 1
-                    boss2.boss_bool = "Yes_collision"
+                    boss3.boss_bool = "Yes_collision"
                     player.ammoY_list[j] = 750
                     player.ammoX_list[j] = 1150
 
             # for what happens if collision happens (player missile --> boss)
-            collide7 = func.collision2(boss2.bossX, boss2.bossY, player.missile_x, player.missile_y)
+            collide7 = func.collision8(boss3.bossX, boss3.bossY, player.missile_x, player.missile_y)
             if collide7:
-                boss2.boss2_HP -= 25
-                boss2.boss_bool = "Yes_collision"
+                boss3.boss3_HP -= 25
+                boss3.boss_bool = "Yes_collision"
                 player.missile_state = "old"
                 player.missile_x = 0
                 player.missile_y = 380
 
             # for what happens if collision happens (player <--> boss)
-            collide8 = func.collision2(player.x, player.y, boss2.bossX, boss2.bossY)
+            collide8 = func.collision9(player.x, player.y, boss3.bossX, boss3.bossY)
             if collide8:
                 player.bool = "Yes_collision"
-                boss2.boss2_HP -= 1
+                boss3.boss3_HP -= 1
                 player.hp -= 1
                 player.score += 1
-                boss2.boss_bool = "Yes_collision"
+                boss3.boss_bool = "Yes_collision"
 
-        # for what happens if collision happens (player <-- boss shots(first weapon stype))
-        if boss2.boss2_HP > 0:
+        # for what happens if collision happens (player <-- final boss shots(first weapon stype))
+        if boss3.boss3_HP > 0:
             for i in range(wpn1.boss_ammo_counter_top):
                 if player.hp > 0:
-                    collide9 = func.collision3(player.x, player.y, wpn1.bossX_ammo_top[i], wpn1.bossY_ammo_top[i])
+                    collide9 = func.collision10(player.x, player.y, wpn1.bossX_ammo_top[i], wpn1.bossY_ammo_top[i])
                     if collide9:
                         player.hp -= 1
                         player.bool = "Yes_collision"
@@ -2679,7 +2681,7 @@ def level_3():
 
             for i in range(wpn1.boss_ammo_counter_bottom):
                 if player.hp > 0:
-                    collide10 = func.collision4(player.x, player.y, wpn1.bossX_ammo_bottom[i], wpn1.bossY_ammo_bottom[i])
+                    collide10 = func.collision11(player.x, player.y, wpn1.bossX_ammo_bottom[i], wpn1.bossY_ammo_bottom[i])
                     if collide10:
                         player.hp -= 1
                         player.bool = "Yes_collision"
@@ -2689,7 +2691,7 @@ def level_3():
             # for what happens if collision happens (player <-- boss shots(second weapon stype))
             for i in range(wpn2.boss_ammo_counter_top):
                 if player.hp > 0:
-                    collide11 = func.collision5(player.x, player.y, wpn2.bossX_ammo_top[i], wpn2.bossY_ammo_top[i])
+                    collide11 = func.collision12(player.x, player.y, wpn2.bossX_ammo_top[i], wpn2.bossY_ammo_top[i])
                     if collide11:
                         player.hp -= 2
                         player.bool = "Yes_collision"
@@ -2698,17 +2700,17 @@ def level_3():
 
             for i in range(wpn2.boss_ammo_counter_bottom):
                 if player.hp > 0:
-                    collide12 = func.collision6(player.x, player.y, wpn2.bossX_ammo_bottom[i], wpn2.bossY_ammo_bottom[i])
+                    collide12 = func.collision13(player.x, player.y, wpn2.bossX_ammo_bottom[i], wpn2.bossY_ammo_bottom[i])
                     if collide12:
                         player.hp -= 2
                         player.bool = "Yes_collision"
                         wpn2.bossY_ammo_bottom[i] = 0
                         wpn2.bossX_ammo_bottom[i] = -100
 
-        # for what happens if collision happens ( player <-- boss death laser )
-        if boss2.death_laser_active == True:
+        # for what happens if collision happens ( player <-- final boss death laser )
+        if boss3.death_laser_active == True:
             if player.hp > 0:
-                collide18 = func.collision7(player.y, boss2.bossY)
+                collide18 = func.collision14(player.y, boss3.bossY)
                 if collide18:
                     player.hp -= 1
                     player.bool = "Yes_collision"
@@ -2739,49 +2741,30 @@ def level_3():
                 player.timer = 0
 
         # visual feedback from collision for boss
-        if boss2.boss_bool == "Yes_collision":
-            boss2.boss_timer += 1
-            if boss2.boss_timer == 25:
-                boss2.boss_bool = "No_collision"
-                boss2.boss_timer = 0
+        if boss3.boss_bool == "Yes_collision":
+            boss3.boss_timer += 1
+            if boss3.boss_timer == 25:
+                boss3.boss_bool = "No_collision"
+                boss3.boss_timer = 0
 
         # WINNING CONDITIONS
-        if boss2.boss2_HP <= 0:
-            explode.lastX = boss2.bossX
-            explode.lastY = boss2.bossY
-            boss2.boss2_HP = 0
-            boss2.end_timer += 1
+        if boss3.boss3_HP <= 0:
+            explode.lastX = boss3.bossX
+            explode.lastY = boss3.bossY
+            boss3.boss3_HP = 0
+            boss3.end_timer += 1
 
-            if boss2.end_timer == 1:
-                boss2.boss_level = False
-                boss2.start_phase = False
-                boss2.second_phase = False
+            if boss3.end_timer == 1:
+                boss3.boss_level = False
+                boss3.start_phase = False
+                boss3.second_phase = False
                 player.score += 100
                 explode.cub_numb += 500
                 func.place_cubes_boss(explode.lastX, explode.lastY, explode.cubeX_list, explode.cubeY_list, explode.cube_list,
                                  explode.cubeX_change, explode.cubeY_change)
 
-                drops.HP_drop_count += 3
-                for i in range(drops.HP_drop_count):
-                    drops.HP_drop_list.append(assets.HP_drop_i)
-                    drops.drop_numbX.append(random.randint(200, 1000))
-                    drops.drop_numbY.append(random.randint(0, 640))
-                    func.HP_drop(drops.drop_numbX[i], drops.drop_numbY[i], i, drops.HP_drop_list)
-                drops.ammo_drop_count += 3
-                for i in range(drops.ammo_drop_count):
-                    drops.ammo_drop_list.append(assets.bullet_drop)
-                    drops.ammo_drop_numbX.append(random.randint(200, 1000))
-                    drops.ammo_drop_numbY.append(random.randint(0, 640))
-                    func.ammo_drop(drops.ammo_drop_numbX[i], drops.ammo_drop_numbY[i], i, drops.ammo_drop_list)
-                drops.missile_drop_count += 2
-                for i in range(drops.missile_drop_count):
-                    drops.missile_drop_list.append(assets.missile_drop)
-                    drops.missile_drop_numbX.append(random.randint(200, 1000))
-                    drops.missile_drop_numbY.append(random.randint(0, 640))
-                    func.ammo_drop(drops.missile_drop_numbX[i], drops.missile_drop_numbY[i], i, drops.missile_drop_list)
-
-            text = assets.font6.render("Press enter to progress to next level", True, (205, 51, 51))
-            assets.screen.blit(text, (200, 640))
+            text = assets.font6.render("Press enter to finish game", True, (205, 51, 51))
+            assets.screen.blit(text, (330, 640))
 
         # LAUNCH ALL AND GAME OVER CONDITION
         # if player HP is less than 0 game is over
@@ -2828,16 +2811,16 @@ def level_3():
             text = assets.font6.render("Wave 3 Incoming", True, (95, 9, 9))
             assets.screen.blit(text, (450, 10))
 
-        if (10800 <= timer <= 10860 or 10921 <= timer <= 10980 or 11041 <= timer <= 11100 or 11161 <= timer <= 11220
-            or 11281 <= timer <= 11340 or 11401 <= timer <= 11460 or 11521 <= timer <= 11580):
-            text = assets.font6.render("!!! Boss Incoming !!!", True, (205, 51, 51))
-            assets.screen.blit(text, (420, 640))
-            assets.screen.blit(text, (420, 10))
-        if (10861 <= timer <= 10920 or 10981 <= timer <= 11040 or 11101 <= timer <= 11160 or 11221 <= timer <= 11280
-            or 11341 <= timer <= 11400 or 11461 <= timer <= 11520 or 11581 <= timer <= 11640):
-            text = assets.font6.render("!!! Boss Incoming !!!", True, (219, 209, 4))
-            assets.screen.blit(text, (420, 10))
-            assets.screen.blit(text, (420, 640))
+        if (11800 <= timer <= 11860 or 12921 <= timer <= 11980 or 12141 <= timer <= 12100 or 12161 <= timer <= 12220
+            or 12281 <= timer <= 12340 or 12401 <= timer <= 12460 or 12521 <= timer <= 12580):
+            text = assets.font6.render("!!! Mothership Incoming !!!", True, (205, 51, 51))
+            assets.screen.blit(text, (360, 640))
+            assets.screen.blit(text, (360, 10))
+        if (11861 <= timer <= 11920 or 11981 <= timer <= 12040 or 12101 <= timer <= 12160 or 12221 <= timer <= 12280
+            or 12341 <= timer <= 12400 or 12461 <= timer <= 12520 or 12581 <= timer <= 12640):
+            text = assets.font6.render("!!! Mothership Incoming !!!", True, (219, 209, 4))
+            assets.screen.blit(text, (360, 10))
+            assets.screen.blit(text, (360, 640))
 
         # update all
         timer += 1
@@ -2880,7 +2863,38 @@ def game_over(score):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     run = False
-                    level_1_intro()
+                    start()
+
+        # updates display each frame
+        pygame.display.update()
+        # limit frames to 100fps / 100 loops per second
+        clock.tick(100)
+
+# game over screen loop
+def game_win(score):
+    run = True
+    while run == True:
+        assets.screen.fill((0, 0, 0))
+
+        # all text on the screen
+        gameWin = assets.font2.render("You Win", True, (255, 215, 0))
+        assets.screen.blit(gameWin, (330, 200))
+        text = assets.font3.render("Alien Invasion is defeated! Earth is Saved", True, (255, 255, 255))
+        assets.screen.blit(text, (355, 300))
+        text2 = assets.font3.render("Press ENTER to play again!", True, (255, 255, 255))
+        assets.screen.blit(text2, (430, 430))
+        text3 = assets.font3.render("Your final score is " + str(score), True, (255, 255, 255))
+        assets.screen.blit(text3, (450, 340))
+
+        # game over menu event handler
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            # press enter to play again
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    run = False
+                    start()
 
         # updates display each frame
         pygame.display.update()

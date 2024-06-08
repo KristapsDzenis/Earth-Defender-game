@@ -4,7 +4,6 @@ import pygame
 import random
 import math
 import assets
-#import stats
 
 pygame.init()
 
@@ -49,21 +48,29 @@ def missile_fire(x, y):
     assets.screen.blit(assets.playerMissile, (x + 25, y + 8))
     missile_state = "new"
 
-# boss
+# first boss
 def boss(x, y):
     assets.screen.blit(assets.boss_ass, (x, y))
 
-# boss if collision
+# first boss if collision
 def boss2(x, y):
     assets.screen.blit(assets.boss_ass_2, (x, y))
 
-# boss
+# second boss
 def boss_second(x, y):
     assets.screen.blit(assets.boss_2_ass, (x, y))
 
-# boss if collision
+# second boss if collision
 def boss2_second(x, y):
     assets.screen.blit(assets.boss_2_ass_2, (x, y))
+
+# final boss
+def mothership(x, y):
+    assets.screen.blit(assets.mothership, (x, y))
+
+# final boss
+def mothership_2(x, y):
+    assets.screen.blit(assets.mothership_2, (x, y))
 
 # boss fire function (top gun)
 def boss_fire(x, y, i, boss_ammo_top):
@@ -73,6 +80,14 @@ def boss_fire(x, y, i, boss_ammo_top):
 def boss_fire_2(x, y, i, boss_ammo_bottom):
     assets.screen.blit(boss_ammo_bottom[i], (x + 100, y + 150))
 
+# final boss fire function (top gun)
+def final_boss_fire(x, y, i, boss_ammo_top):
+    assets.screen.blit(boss_ammo_top[i], (x + 100, y + 50))
+
+# final boss fire function (bottom gun)
+def final_boss_fire_2(x, y, i, boss_ammo_bottom):
+    assets.screen.blit(boss_ammo_bottom[i], (x + 100, y + 220))
+
 # boss fire function for second weapond type (top gun)
 def boss_laser(x, y, i, boss_ammo_top):
     assets.screen.blit(boss_ammo_top[i], (x + 80, y + 45))
@@ -81,13 +96,29 @@ def boss_laser(x, y, i, boss_ammo_top):
 def boss_laser_2(x, y, i, boss_ammo_bottom):
     assets.screen.blit(boss_ammo_bottom[i], (x + 80, y + 105))
 
+# final boss fire function for second weapond type (top gun)
+def final_boss_laser(x, y, i, boss_ammo_top):
+    assets.screen.blit(boss_ammo_top[i], (x + 60, y + 85))
+
+# final boss fire function for second weapond type (bottom gun)
+def final_boss_laser_2(x, y, i, boss_ammo_bottom):
+    assets.screen.blit(boss_ammo_bottom[i], (x + 60, y + 180))
+
 # boss laser target function
 def boss_target_sys(x, y):
     assets.screen.blit(assets.boss_target_sys, (x - 950, y + 100))
 
+# final boss laser target function
+def final_boss_target_sys(x, y):
+    assets.screen.blit(assets.boss_target_sys, (x - 950, y + 139))
+
 # boss death laser function
 def boss_death_laser(x, y):
     assets.screen.blit(assets.death_laser, (x - 1100, y + 84))
+
+# final boss death laser function
+def final_boss_death_laser(x, y):
+    assets.screen.blit(assets.death_laser, (x - 1200, y + 125))
 
 # enemy
 def enemy(x, y, i, alien_list):
@@ -160,6 +191,61 @@ def collision6(x, y, z, i):
 # collision detection ( player <-- boss death laser )
 def collision7(x, y):
     if y <= x <= y + 32:
+        return True
+    else:
+        return False
+
+# collision detection (player/ player shots/missiles --> final boss)
+def collision8(x, y, z, i):
+    distance = math.sqrt((math.pow((x + 120) - z, 2)) + (math.pow((y+120) - i, 2)))
+    if distance < 150:
+        return True
+    else:
+        return False
+
+# collision detection (player --> boss final)
+def collision9(x, y, z, i):
+    distance = math.sqrt((math.pow(x - (z + 120), 2)) + (math.pow(y - (i + 120), 2)))
+    if distance < 150:
+        return True
+    else:
+        return False
+
+# collision detection (player <-- final boss shots(first weapon type(top))
+def collision10(x, y, z, i):
+    distance = math.sqrt((math.pow(x - z - 100, 2)) + (math.pow(y - i - 50, 2)))
+    if distance < 27:
+        return True
+    else:
+        return False
+
+# collision detection (player <-- final boss shots(first weapon type(bottom))
+def collision11(x, y, z, i):
+    distance = math.sqrt((math.pow(x - z - 100, 2)) + (math.pow(y - i - 220, 2)))
+    if distance < 27:
+        return True
+    else:
+        return False
+
+# collision detection (player <-- final boss shots(second weapon type(top))
+def collision12(x, y, z, i):
+    distance = math.sqrt((math.pow(x - z - 60, 2)) + (math.pow(y - i - 85, 2)))
+    if distance < 27:
+        return True
+    else:
+        return False
+
+# collision detection (player <-- final boss shots(second weapon type(bottom))
+def collision13(x, y, z, i):
+    distance = math.sqrt((math.pow(x - z - 60, 2)) + (math.pow(y - i - 180, 2)))
+    if distance < 27:
+        return True
+    else:
+        return False
+
+# collision detection ( player <-- final boss death laser )
+def collision14(x, y):
+    if y + 80 <= x <= (y + 32) + 80:
         return True
     else:
         return False
