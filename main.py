@@ -14,6 +14,7 @@ clock = pygame.time.Clock()
 # start screen loop
 def start():
     timer = 0
+    timer_2 = 0
     timer_bool = "yes"
     run = True
     while run == True:
@@ -40,16 +41,18 @@ def start():
             timer_bool = "yes"
 
         # start menu event handler
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-            # press enter to start game
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_RETURN:
+        if timer_2 >= 200:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
                     run = False
-                    level_1_intro()
+                # press enter to start game
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        run = False
+                        level_1_intro()
 
         # updates display each frame
+        timer_2 += 1
         pygame.display.update()
         # limit frames to 100fps / 100 loops per second
         clock.tick(100)
