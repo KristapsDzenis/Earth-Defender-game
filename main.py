@@ -1891,7 +1891,7 @@ def level_3(player):
     enemy_count_2 = 0
     enemy_wave = False
 
-    timer = 11500
+    timer = 0
     run = True
     while run == True:
         # background ,UI elements
