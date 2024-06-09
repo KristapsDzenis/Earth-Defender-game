@@ -15,6 +15,7 @@ clock = pygame.time.Clock()
 def start():
     run = True
     selected_index = 0
+    timer = 0
     while run == True:
         assets.screen.fill((0, 0, 0))
 
@@ -34,27 +35,30 @@ def start():
         buttons[selected_index].set_selected(True)
 
         # event handler for start menu
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_DOWN:
-                    buttons[selected_index].set_selected(False)
-                    selected_index = 1
-                    buttons[selected_index].set_selected(True)
-                elif event.key == pygame.K_UP:
-                    buttons[selected_index].set_selected(False)
-                    selected_index = 0
-                    buttons[selected_index].set_selected(True)
-                elif event.key == pygame.K_RETURN:
-                    buttons[selected_index].is_clicked()
+        if timer >= 150:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
                     run = False
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_DOWN:
+                        buttons[selected_index].set_selected(False)
+                        selected_index = 1
+                        buttons[selected_index].set_selected(True)
+                    elif event.key == pygame.K_UP:
+                        buttons[selected_index].set_selected(False)
+                        selected_index = 0
+                        buttons[selected_index].set_selected(True)
+                    elif event.key == pygame.K_RETURN:
+                        buttons[selected_index].is_clicked()
+                        timer = 0
+                        run = False
 
         # places buttons on screen
         for button in buttons:
             button.draw(assets.screen)
 
         # updates display each frame
+        timer += 1
         pygame.display.update()
         # limit frames to 100fps / 100 loops per second
         clock.tick(100)

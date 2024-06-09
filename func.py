@@ -20,7 +20,7 @@ def ammoCounter(ammo):
 # score counter
 def scoreCounter(score):
     score_bar = assets.font.render(str(score), True, (255, 255, 255))
-    assets.screen.blit(score_bar, (980, 752))
+    assets.screen.blit(score_bar, (960, 752))
 
 # missile counter
 def missileCounter(missile_ammo):
