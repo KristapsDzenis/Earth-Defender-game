@@ -1,4 +1,6 @@
 # file for all classes
+import pygame
+import assets
 
 # Player class containing all attributes for player
 class Player:
@@ -135,3 +137,34 @@ class level1_Boss_Wpn2(level1_Boss_Wpn1):
     def __init__(self):
         level1_Boss_Wpn1.__init__(self)
         self.bossX_ammoChange_2 = 5.5
+
+#class for buttons
+class Button:
+    def __init__(self, x, y, width, height, text, action=None):
+        # all buttons attributes
+        self.rect = pygame.Rect(x, y, width, height)
+        self.color = (36, 36, 36)
+        self.hover_color = (255, 215, 0)
+        self.text = text
+        self.font = assets.font6
+        self.action = action
+        self.text_surf = self.font.render(self.text, True, (0, 0, 0))
+        self.text_rect = self.text_surf.get_rect(center=self.rect.center)
+        self.selected = False
+
+    # draw buttons on screen
+    def draw(self, screen):
+        if self.selected:
+            pygame.draw.rect(screen, self.hover_color, self.rect)
+        else:
+            pygame.draw.rect(screen, self.color, self.rect)
+        screen.blit(self.text_surf, self.text_rect)
+
+    # function for triggering function associated to button
+    def is_clicked(self):
+        if self.action:
+            self.action()
+
+    # function for selecting button
+    def set_selected(self, selected):
+        self.selected = selected
