@@ -25,37 +25,36 @@ def start():
         title = assets.font4.render("Defender", True, (255, 215, 0))
         assets.screen.blit(title, (260, 320))
 
-        # array of 2 button objects
-        buttons = [
-            stats.Button(400, 480, 400, 60, "NEW GAME", level_1_intro),
-            stats.Button(400, 550, 400, 60, "QUIT", pygame.quit)
-        ]
-
-        # selection for first button on screen
-        buttons[selected_index].set_selected(True)
-
         # event handler for start menu
-        if timer >= 150:
+        if timer > 400:
+            # array of 2 button objects
+            buttons = [
+                stats.Button(400, 480, 400, 60, "NEW GAME", level_1_intro),
+                stats.Button(400, 550, 400, 60, "QUIT", pygame.quit)
+            ]
+
+            # selection for first button on screen
+            buttons[selected_index].set_selected(True)
+
+            # places buttons on screen
+            for button in buttons:
+                button.draw(assets.screen)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
-                elif event.type == pygame.KEYDOWN:
+                if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_DOWN:
                         buttons[selected_index].set_selected(False)
                         selected_index = 1
                         buttons[selected_index].set_selected(True)
-                    elif event.key == pygame.K_UP:
+                    if event.key == pygame.K_UP:
                         buttons[selected_index].set_selected(False)
                         selected_index = 0
                         buttons[selected_index].set_selected(True)
-                    elif event.key == pygame.K_RETURN:
+                    if event.key == pygame.K_RETURN:
                         buttons[selected_index].is_clicked()
                         timer = 0
                         run = False
-
-        # places buttons on screen
-        for button in buttons:
-            button.draw(assets.screen)
 
         # updates display each frame
         timer += 1
@@ -81,10 +80,16 @@ def level_1_intro():
             run = False
             level_1()
 
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+
         # updates display each frame
         pygame.display.update()
         # limit frames to 100fps / 100 loops per second
         clock.tick(100)
+
+    pygame.quit()
 
 # level 2 intro screen loop
 def level_2_intro(player):
@@ -104,13 +109,19 @@ def level_2_intro(player):
             run = False
             level_2(player)
 
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+
         # updates display each frame
         pygame.display.update()
         # limit frames to 100fps / 100 loops per second
         clock.tick(100)
 
+    pygame.quit()
+
 # level 3 intro screen loop
-def level_3_intro():
+def level_3_intro(player):
     timer = 0
     run = True
     while run == True:
@@ -125,12 +136,18 @@ def level_3_intro():
 
         if timer == 300:
             run = False
-            level_3()
+            level_3(player)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
 
         # updates display each frame
         pygame.display.update()
         # limit frames to 100fps / 100 loops per second
         clock.tick(100)
+
+    pygame.quit()
 
 # main loop for level 1
 def level_1():
