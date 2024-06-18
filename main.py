@@ -16,6 +16,13 @@ def start():
     run = True
     selected_index = 0
     timer = 0
+
+    # array of 2 button objects
+    button_1 = stats.Button(400, 480, 400, 60, "NEW GAME", level_1_intro)
+    button_2 = stats.Button(400, 550, 400, 60, "QUIT", pygame.quit)
+
+    buttons = [button_1, button_2]
+
     while run == True:
         assets.screen.fill((0, 0, 0))
 
@@ -26,12 +33,7 @@ def start():
         assets.screen.blit(title, (260, 320))
 
         # event handler for start menu
-        if timer > 400:
-            # array of 2 button objects
-            buttons = [
-                stats.Button(400, 480, 400, 60, "NEW GAME", level_1_intro),
-                stats.Button(400, 550, 400, 60, "QUIT", pygame.quit)
-            ]
+        if timer > 200:
 
             # selection for first button on screen
             buttons[selected_index].set_selected(True)
@@ -52,15 +54,18 @@ def start():
                         selected_index = 0
                         buttons[selected_index].set_selected(True)
                     if event.key == pygame.K_RETURN:
-                        buttons[selected_index].is_clicked()
                         timer = 0
                         run = False
+                        buttons[selected_index].is_clicked()
 
         # updates display each frame
         timer += 1
         pygame.display.update()
         # limit frames to 100fps / 100 loops per second
         clock.tick(100)
+
+    pygame.quit()
+
 
 # level 1 intro screen loop
 def level_1_intro():
@@ -69,7 +74,6 @@ def level_1_intro():
     while run == True:
         assets.screen.fill((0, 0, 0))
         timer += 1
-
         # level title
         title = assets.font5.render("Level 1", True, (8, 167, 3))
         assets.screen.blit(title, (200, 320))
@@ -2886,7 +2890,7 @@ def game_over(score):
             if event.type == pygame.QUIT:
                 run = False
             # press enter to play again
-            if event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYUP:
                 if event.key == pygame.K_RETURN:
                     run = False
                     start()
@@ -2917,7 +2921,7 @@ def game_win(score):
             if event.type == pygame.QUIT:
                 run = False
             # press enter to play again
-            if event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYUP:
                 if event.key == pygame.K_RETURN:
                     run = False
                     start()

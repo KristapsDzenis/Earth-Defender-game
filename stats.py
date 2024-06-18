@@ -163,7 +163,9 @@ class Button:
     # function for triggering function associated to button
     def is_clicked(self):
         if self.action:
-            self.action()
+            action_to_execute = self.action  # Store the action to execute
+            self.action = None  # Remove the action before executing it
+            action_to_execute()
 
     # function for selecting button
     def set_selected(self, selected):
